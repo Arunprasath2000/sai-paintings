@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAI Paintings — Colour Your World</title>
+<meta name="description" content="SAI Paintings — interior, exterior, commercial and texture painting. Bold colours, clean finish, on-time delivery.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b1530; --cream:#fff8ec; --paper:#fffdf8;
+  --pink:#ff3d7f; --orange:#ff8a1f; --yellow:#ffd23f; --green:#2ec4a0; --blue:#3a86ff; --violet:#8338ec;
+  --rainbow:linear-gradient(90deg,var(--pink),var(--orange),var(--yellow),var(--green),var(--blue),var(--violet));
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Bricolage Grotesque",system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.5}
+img{max-width:100%;display:block}
+a{color:inherit}
+.hand{font-family:"Caveat",cursive}
+.wrap{width:min(1200px,100% - 32px);margin-inline:auto}
+#trail{position:fixed;inset:0;pointer-events:none;z-index:1}
+section,header,footer{position:relative;z-index:2}
+
+/* ---------- NAV ---------- */
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;width:min(1100px,100% - 24px);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 20px;
+  background:rgba(255,253,248,.85);backdrop-filter:blur(10px);border:3px solid var(--ink);border-radius:999px;box-shadow:5px 5px 0 var(--ink)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.25rem;text-decoration:none;letter-spacing:-.5px}
+.logo-dot{width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--pink),var(--orange),var(--yellow),var(--green),var(--blue),var(--violet),var(--pink));animation:spin 6s linear infinite;border:3px solid var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.links{display:flex;gap:4px}
+.links a{text-decoration:none;font-weight:600;padding:8px 14px;border-radius:999px;transition:.2s}
+.links a:hover{background:var(--yellow)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:800;text-decoration:none;cursor:pointer;
+  padding:12px 22px;border-radius:999px;border:3px solid var(--ink);background:var(--pink);color:#fff;box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn.alt{background:var(--yellow);color:var(--ink)}
+.burger{display:none;background:none;border:0;font-size:1.6rem;cursor:pointer}
+
+/* ---------- HERO ---------- */
+.hero{min-height:100vh;padding:130px 0 120px;display:grid;align-items:center;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.tag{display:inline-block;background:var(--ink);color:var(--yellow);padding:6px 14px;border-radius:999px;font-weight:600;font-size:.9rem;transform:rotate(-2deg)}
+h1{font-size:clamp(2.8rem,7.5vw,6.4rem);line-height:.92;letter-spacing:-3px;font-weight:800;margin:18px 0}
+h1 .splash{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:flow 5s linear infinite}
+@keyframes flow{to{background-position:200% 0}}
+.rotator{display:inline-block;position:relative;color:var(--pink);min-width:5ch}
+.rotator::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:14px;background:var(--yellow);z-index:-1;border-radius:6px;transform:skew(-8deg)}
+.hero p.lead{font-size:1.2rem;max-width:520px;margin-bottom:28px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.hero-art{position:relative;aspect-ratio:1;max-width:520px;justify-self:center;width:100%}
+.blob{position:absolute;inset:0;overflow:hidden;border:4px solid var(--ink);
+  border-radius:62% 38% 46% 54% / 49% 61% 39% 51%;animation:morph 9s ease-in-out infinite;box-shadow:10px 10px 0 var(--ink)}
+.blob img{width:100%;height:100%;object-fit:cover}
+@keyframes morph{50%{border-radius:38% 62% 58% 42% / 58% 37% 63% 42%}}
+.sticker{position:absolute;background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:10px 16px;font-weight:800;box-shadow:4px 4px 0 var(--ink);animation:bob 4s ease-in-out infinite}
+.sticker b{display:block;font-size:1.8rem;line-height:1}
+.s1{top:6%;left:-6%;background:var(--green);color:#fff}
+.s2{bottom:8%;right:-4%;background:var(--yellow);animation-delay:-2s}
+.s3{bottom:-4%;left:12%;background:var(--violet);color:#fff;animation-delay:-1s;transform:rotate(-6deg)}
+@keyframes bob{50%{translate:0 -12px}}
+.drop{position:absolute;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;opacity:.9}
+
+/* drips divider */
+.drips{position:absolute;left:0;right:0;height:90px;width:100%}
+.drips.bottom{bottom:-1px}
+
+/* ---------- MARQUEE ---------- */
+.marquee{background:var(--ink);color:var(--cream);padding:18px 0;overflow:hidden;transform:rotate(-1.5deg);margin:0 -20px;border-block:4px solid var(--yellow)}
+.marquee .track{display:flex;gap:40px;width:max-content;animation:scroll 28s linear infinite;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:800;white-space:nowrap}
+.marquee span.sw{display:inline-block;width:.8em;height:.8em;border-radius:50%;margin-right:12px;vertical-align:-.05em;border:2px solid var(--cream)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- SECTION HEADS ---------- */
+.sec{padding:110px 0}
+.kicker{font-size:1.8rem;color:var(--pink);transform:rotate(-3deg);display:inline-block}
+h2{font-size:clamp(2.2rem,5vw,4rem);line-height:1;letter-spacing:-2px;font-weight:800;margin:6px 0 16px}
+.sub{max-width:560px;font-size:1.1rem;opacity:.8}
+
+/* ---------- SERVICES as paint chips ---------- */
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px;margin-top:50px}
+.chip{background:var(--paper);border:3px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);transition:transform .25s}
+.chip:nth-child(odd){transform:rotate(-1.5deg)}
+.chip:nth-child(even){transform:rotate(1.5deg)}
+.chip:hover{transform:rotate(0) translateY(-8px) scale(1.02)}
+.chip .swatch{height:170px;position:relative;overflow:hidden}
+.chip .swatch img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;transition:transform .5s}
+.chip:hover .swatch img{transform:scale(1.1)}
+.chip .code{position:absolute;top:12px;left:12px;background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:2px 8px;font-size:.8rem;font-weight:700}
+.chip .body{padding:18px 20px 22px}
+.chip h3{font-size:1.4rem;margin-bottom:6px}
+.chip p{opacity:.8;font-size:.98rem}
+
+/* ---------- COLOUR STUDIO ---------- */
+.studio{background:var(--ink);color:var(--cream);overflow:hidden}
+.studio .kicker{color:var(--yellow)}
+.studio-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:center;margin-top:40px}
+.room{border:4px solid var(--cream);border-radius:28px;overflow:hidden;box-shadow:10px 10px 0 var(--pink);background:#fff}
+.room svg{width:100%;height:auto;display:block}
+#wall,#wall2{transition:fill .7s ease}
+.palette{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+.pot{aspect-ratio:1;border-radius:50%;border:4px solid var(--cream);cursor:pointer;transition:transform .2s;position:relative}
+.pot:hover{transform:scale(1.12) rotate(-8deg)}
+.pot.on{outline:4px dashed var(--yellow);outline-offset:4px}
+.colorname{font-size:2.6rem;color:var(--yellow);min-height:3.2rem}
+.studio p{opacity:.85}
+
+/* ---------- BEFORE AFTER ---------- */
+.ba{position:relative;aspect-ratio:16/9;border:4px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:10px 10px 0 var(--orange);margin-top:40px;user-select:none;touch-action:pan-y}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .before{filter:grayscale(1) contrast(.85) brightness(1.08) sepia(.25)}
+.ba .after-wrap{position:absolute;inset:0;clip-path:inset(0 0 0 50%)}
+.ba .handle{position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--paper);translate:-50% 0}
+.ba .knob{position:absolute;top:50%;left:50%;translate:-50% -50%;width:58px;height:58px;border-radius:50%;background:var(--yellow);border:4px solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:1.3rem;cursor:ew-resize}
+.ba .lbl{position:absolute;top:16px;padding:6px 14px;border-radius:999px;font-weight:800;border:3px solid var(--ink)}
+.ba .lbl.l{left:16px;background:var(--paper)}
+.ba .lbl.r{right:16px;background:var(--pink);color:#fff}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+
+/* ---------- GALLERY ---------- */
+.gallery{columns:3 260px;column-gap:22px;margin-top:50px}
+.gal{break-inside:avoid;margin-bottom:22px;border:3px solid var(--ink);border-radius:20px;overflow:hidden;position:relative;box-shadow:5px 5px 0 var(--c,var(--blue))}
+.gal img{width:100%;transition:transform .6s}
+.gal:hover img{transform:scale(1.07)}
+.gal figcaption{position:absolute;left:12px;bottom:12px;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.9rem}
+
+/* ---------- PROCESS ---------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:50px;counter-reset:s}
+.step{padding:28px 22px;border-radius:26px;border:3px solid var(--ink);position:relative;counter-increment:s;box-shadow:5px 5px 0 var(--ink)}
+.step::before{content:counter(s,decimal-leading-zero);font-size:3.6rem;font-weight:800;line-height:1;display:block;margin-bottom:10px;-webkit-text-stroke:2px var(--ink);color:transparent}
+.step h3{font-size:1.3rem;margin-bottom:6px}
+.step:nth-child(1){background:#ffe1ec}.step:nth-child(2){background:#fff1c9}.step:nth-child(3){background:#d6f7ee}.step:nth-child(4){background:#dfe9ff}
+
+/* ---------- STATS ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:4px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:8px 8px 0 var(--ink)}
+.stat{padding:34px 20px;text-align:center;color:#fff}
+.stat b{font-size:clamp(2.2rem,5vw,3.4rem);display:block;line-height:1;font-weight:800}
+.stat:nth-child(1){background:var(--pink)}.stat:nth-child(2){background:var(--orange)}.stat:nth-child(3){background:var(--green)}.stat:nth-child(4){background:var(--violet)}
+
+/* ---------- REVIEWS ---------- */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;margin-top:50px}
+.review{background:var(--paper);border:3px solid var(--ink);border-radius:24px;padding:26px;position:relative;box-shadow:6px 6px 0 var(--c)}
+.review .stars{color:var(--orange);font-size:1.3rem;letter-spacing:2px}
+.review p{margin:12px 0 16px;font-size:1.05rem}
+.review .who{font-weight:800}
+.review .hand{font-size:1.3rem;color:var(--c)}
+
+/* ---------- CONTACT ---------- */
+.contact{background:var(--rainbow);background-size:300% 100%;animation:flow 14s linear infinite}
+.card{background:var(--paper);border:4px solid var(--ink);border-radius:32px;box-shadow:12px 12px 0 var(--ink);padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:1fr 1fr;gap:40px}
+form{display:grid;gap:14px}
+label{font-weight:700;font-size:.95rem}
+input,select,textarea{width:100%;font:inherit;padding:12px 16px;border:3px solid var(--ink);border-radius:16px;background:#fff;margin-top:4px}
+input:focus,select:focus,textarea:focus{outline:none;box-shadow:4px 4px 0 var(--pink)}
+.info li{list-style:none;display:flex;gap:12px;align-items:flex-start;margin:16px 0;font-size:1.05rem}
+.info .ic{width:44px;height:44px;flex:none;border-radius:14px;border:3px solid var(--ink);display:grid;place-items:center;font-size:1.2rem}
+
+footer{background:var(--ink);color:var(--cream);padding:40px 0 30px;text-align:center}
+footer .big{font-size:clamp(3rem,13vw,10rem);font-weight:800;letter-spacing:-4px;line-height:.9;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.wa{position:fixed;right:18px;bottom:18px;z-index:60;width:62px;height:62px;border-radius:50%;background:#25d366;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:grid;place-items:center;animation:bob 3s ease-in-out infinite}
+.wa svg{width:32px;height:32px;fill:#fff}
+
+.reveal{opacity:0;translate:0 40px;transition:opacity .8s,translate .8s}
+.reveal.in{opacity:1;translate:0 0}
+
+@media (max-width:900px){
+  .hero-grid,.studio-grid,.card{grid-template-columns:1fr}
+  .hero-art{max-width:400px}
+  .stats{grid-template-columns:1fr 1fr}
+  .links{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;background:var(--paper);border:3px solid var(--ink);border-radius:24px;padding:12px;box-shadow:5px 5px 0 var(--ink)}
+  .links.open{display:flex}
+  .burger{display:block}
+  nav .btn{display:none}
+  .s1{left:0}.s2{right:0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="trail"></canvas>
+
+<nav>
+  <a href="#top" class="logo"><span class="logo-dot"></span>SAI Paintings</a>
+  <div class="links" id="links">
+    <a href="#services">Services</a>
+    <a href="#studio">Colour Studio</a>
+    <a href="#work">Our Work</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="btn">Free Quote →</a>
+  <button class="burger" id="burger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <span class="drop" style="width:90px;height:110px;background:var(--yellow);top:18%;left:4%"></span>
+  <span class="drop" style="width:40px;height:50px;background:var(--green);top:70%;left:44%"></span>
+  <span class="drop" style="width:60px;height:72px;background:var(--blue);top:14%;right:6%"></span>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="tag">🎨 Painting homes since 2012</span>
+      <h1>We paint <br><span class="rotator" id="rot">homes</span><br><span class="splash">in full colour.</span></h1>
+      <p class="lead">SAI Paintings turns tired walls into rooms you love. Interior, exterior, texture and commercial painting — neat work, premium paints, on time.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn">Get a free site visit</a>
+        <a href="#studio" class="btn alt">Try colours live ✦</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="blob"><img src="https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=900&q=80" alt="Paint rollers with bright red, orange, green and blue stripes on a wall"></div>
+      <div class="sticker s1"><b>1,200+</b>walls painted</div>
+      <div class="sticker s2"><b>4.9★</b>happy clients</div>
+      <div class="sticker s3 hand" style="font-size:1.5rem">No mess. Promise!</div>
+    </div>
+  </div>
+  <svg class="drips bottom" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#1b1530" d="M0 90V30h80c10 0 12 40 26 40s14-40 30-40h170c12 0 10 55 28 55s16-55 32-55h220c10 0 14 30 26 30s12-30 24-30h260c14 0 12 50 30 50s18-50 34-50h180c10 0 10 26 22 26s12-26 22-26h276v60z"/>
+  </svg>
+</header>
+
+<!-- ============ MARQUEE ============ -->
+<div style="background:var(--ink);padding:24px 0;overflow:hidden">
+  <div class="marquee"><div class="track" id="track"></div></div>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <span class="kicker hand">what we do</span>
+    <h2>Pick a chip.<br>We'll paint the rest.</h2>
+    <p class="sub">Every job gets surface prep, crack filling, primer and two finish coats — no shortcuts.</p>
+    <div class="chips">
+      <article class="chip reveal">
+        <div class="swatch" style="background:var(--pink)"><span class="code">SAI-01</span><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=75" alt="Living room with a yellow armchair"></div>
+        <div class="body"><h3>Interior Painting</h3><p>Living rooms, bedrooms, kitchens — smooth emulsion finishes in any shade you dream up.</p></div>
+      </article>
+      <article class="chip reveal">
+        <div class="swatch" style="background:var(--orange)"><span class="code">SAI-02</span><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=75" alt="Modern house exterior at dusk"></div>
+        <div class="body"><h3>Exterior Painting</h3><p>Weather-proof coatings that stand up to sun and monsoon for years.</p></div>
+      </article>
+      <article class="chip reveal">
+        <div class="swatch" style="background:var(--green)"><span class="code">SAI-03</span><img src="https://images.unsplash.com/photo-1541123603104-512919d6a96c?w=700&q=75" alt="Textured concrete-look wall with abstract art"></div>
+        <div class="body"><h3>Texture &amp; Designer Walls</h3><p>Stucco, rustic, metallic and stencil walls that make guests stop and stare.</p></div>
+      </article>
+      <article class="chip reveal">
+        <div class="swatch" style="background:var(--blue)"><span class="code">SAI-04</span><img src="https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=700&q=75" alt="Colourful office interior with blue and yellow walls"></div>
+        <div class="body"><h3>Commercial &amp; Office</h3><p>Shops, offices and schools painted after hours, so your work never stops.</p></div>
+      </article>
+      <article class="chip reveal">
+        <div class="swatch" style="background:var(--violet)"><span class="code">SAI-05</span><img src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=700&q=75" alt="Roller painting a wall blue"></div>
+        <div class="body"><h3>Waterproofing</h3><p>Terrace and wall waterproofing that keeps damp and leaks out for good.</p></div>
+      </article>
+      <article class="chip reveal">
+        <div class="swatch" style="background:var(--yellow)"><span class="code">SAI-06</span><img src="https://images.unsplash.com/photo-1595814433015-e6f5ce69614e?w=700&q=75" alt="Two people standing with paint brushes"></div>
+        <div class="body"><h3>Wood &amp; Metal Polish</h3><p>Doors, grills and furniture — enamel, PU and melamine finishes that shine.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COLOUR STUDIO ============ -->
+<section class="sec studio" id="studio">
+  <svg class="drips" style="top:-1px;transform:scaleY(-1)" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#fff8ec" d="M0 90V30h120c10 0 12 50 28 50s14-50 30-50h200c12 0 10 34 24 34s14-34 30-34h300c10 0 14 56 30 56s14-56 28-56h220c14 0 12 30 26 30s14-30 30-30h374v60z"/>
+  </svg>
+  <div class="wrap">
+    <span class="kicker hand">colour studio</span>
+    <h2>Repaint this room.<br>Right now.</h2>
+    <div class="studio-grid">
+      <div class="room reveal">
+        <svg viewBox="0 0 600 400" role="img" aria-label="Illustrated living room whose wall colour changes">
+          <rect id="wall" width="600" height="300" fill="#ff8a1f"/>
+          <rect id="wall2" x="430" width="170" height="300" fill="#ff8a1f" style="filter:brightness(.85)"/>
+          <rect y="300" width="600" height="100" fill="#c89b6d"/>
+          <g fill="#b08257"><rect y="300" width="600" height="6"/><rect x="0" y="330" width="600" height="2"/><rect x="0" y="362" width="600" height="2"/></g>
+          <!-- window -->
+          <rect x="460" y="60" width="110" height="140" rx="6" fill="#bfe6ff" stroke="#fff" stroke-width="8"/>
+          <line x1="515" y1="60" x2="515" y2="200" stroke="#fff" stroke-width="6"/>
+          <!-- frame -->
+          <rect x="150" y="70" width="130" height="90" fill="#fff" stroke="#1b1530" stroke-width="6"/>
+          <circle cx="200" cy="120" r="22" fill="#ff3d7f"/><path d="M160 150l40-30 30 20 40-35v45z" fill="#2ec4a0"/>
+          <!-- sofa -->
+          <rect x="90" y="215" width="300" height="70" rx="20" fill="#1b1530"/>
+          <rect x="70" y="200" width="40" height="95" rx="16" fill="#2a2147"/>
+          <rect x="370" y="200" width="40" height="95" rx="16" fill="#2a2147"/>
+          <rect x="120" y="190" width="110" height="45" rx="14" fill="#2a2147"/>
+          <rect x="250" y="190" width="110" height="45" rx="14" fill="#2a2147"/>
+          <rect x="140" y="200" width="50" height="34" rx="8" fill="#ffd23f" transform="rotate(-8 165 217)"/>
+          <rect x="95" y="295" width="10" height="16" fill="#1b1530"/><rect x="375" y="295" width="10" height="16" fill="#1b1530"/>
+          <!-- plant -->
+          <path d="M440 300l10-50h40l10 50z" fill="#fff"/>
+          <g fill="#2ec4a0"><ellipse cx="470" cy="225" rx="12" ry="34"/><ellipse cx="450" cy="235" rx="10" ry="28" transform="rotate(-25 450 235)"/><ellipse cx="490" cy="235" rx="10" ry="28" transform="rotate(25 490 235)"/></g>
+          <!-- lamp -->
+          <line x1="40" y1="120" x2="40" y2="300" stroke="#1b1530" stroke-width="5"/>
+          <path d="M15 120h50l-12-40H27z" fill="#ffd23f" stroke="#1b1530" stroke-width="4"/>
+          <rect x="25" y="296" width="30" height="6" fill="#1b1530"/>
+        </svg>
+      </div>
+      <div class="reveal">
+        <p>Tap a paint pot to see the wall change. Can't decide? Our colour consultant brings real shade cards to your home — free.</p>
+        <div class="palette" id="palette"></div>
+        <div class="colorname hand" id="cname">Sunset Orange</div>
+        <a href="#contact" class="btn alt" style="margin-top:12px">I want this colour →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BEFORE / AFTER ============ -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <span class="kicker hand">see the difference</span>
+    <h2>Before. After. Wow.</h2>
+    <p class="sub">Drag the yellow knob to see how fresh colour brings a room back to life.</p>
+    <div class="ba reveal" id="ba">
+      <img class="before" src="https://images.unsplash.com/photo-1617104551722-3b2d51366400?w=1400&q=80" alt="Dining room before painting, dull and faded">
+      <div class="after-wrap" id="after"><img src="https://images.unsplash.com/photo-1617104551722-3b2d51366400?w=1400&q=80" alt="Dining room after painting with bright blue patterned walls"></div>
+      <div class="handle" id="handle"><div class="knob">⇆</div></div>
+      <span class="lbl l">Before</span><span class="lbl r">After</span>
+      <input type="range" min="0" max="100" value="50" id="baRange" aria-label="Before and after slider">
+    </div>
+
+    <div class="gallery">
+      <figure class="gal reveal" style="--c:var(--pink)"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=75" alt="Warm living room interior"><figcaption>Villa · Coimbatore</figcaption></figure>
+      <figure class="gal reveal" style="--c:var(--yellow)"><img src="https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=800&q=75" alt="Colourful paint stripes"><figcaption>Kids' play school</figcaption></figure>
+      <figure class="gal reveal" style="--c:var(--green)"><img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=800&q=75" alt="Open living and dining area"><figcaption>Apartment · Chennai</figcaption></figure>
+      <figure class="gal reveal" style="--c:var(--blue)"><img src="https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=800&q=75" alt="Colourful office"><figcaption>Startup office</figcaption></figure>
+      <figure class="gal reveal" style="--c:var(--violet)"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=75" alt="Modern home exterior"><figcaption>Exterior · Tiruppur</figcaption></figure>
+      <figure class="gal reveal" style="--c:var(--orange)"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=75" alt="Room with yellow chair"><figcaption>Flat · Salem</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="wrap" style="padding-bottom:40px">
+  <div class="stats reveal">
+    <div class="stat"><b data-count="12">0</b>years of colour</div>
+    <div class="stat"><b data-count="850">0</b>projects done</div>
+    <div class="stat"><b data-count="35">0</b>skilled painters</div>
+    <div class="stat"><b data-count="1200">0</b>shades available</div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <span class="kicker hand">how it works</span>
+    <h2>Four easy strokes.</h2>
+    <div class="steps">
+      <div class="step reveal"><h3>Free site visit</h3><p>We measure, check the walls and understand what you like.</p></div>
+      <div class="step reveal"><h3>Pick your shades</h3><p>Shade cards, samples on your wall and honest advice.</p></div>
+      <div class="step reveal"><h3>Clean painting</h3><p>Furniture covered, floors protected, daily clean-up.</p></div>
+      <div class="step reveal"><h3>Final walkthrough</h3><p>We touch up anything you spot. Then you enjoy it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="sec" id="reviews" style="padding-top:20px">
+  <div class="wrap">
+    <span class="kicker hand">kind words</span>
+    <h2>Happy walls,<br>happy people.</h2>
+    <div class="reviews">
+      <div class="review reveal" style="--c:var(--pink)"><div class="stars">★★★★★</div><p>“They finished our full 3BHK in 6 days and the house was cleaner than before they came. The teal bedroom is my favourite place now.”</p><div class="who">Priya R.</div><span class="hand">3BHK interior</span></div>
+      <div class="review reveal" style="--c:var(--green)"><div class="stars">★★★★★</div><p>“Our shop front looks brand new. They worked at night so we never had to close. Very professional team.”</p><div class="who">Karthik S.</div><span class="hand">Retail exterior</span></div>
+      <div class="review reveal" style="--c:var(--blue)"><div class="stars">★★★★★</div><p>“The texture wall in our hall gets compliments from every guest. Fair price and they explained every step.”</p><div class="who">Meena &amp; Ravi</div><span class="hand">Designer wall</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sec contact" id="contact">
+  <div class="wrap">
+    <div class="card reveal">
+      <div>
+        <span class="kicker hand">let's talk colour</span>
+        <h2>Get your free quote.</h2>
+        <p class="sub">Tell us a little about your space. We'll reply on WhatsApp within a few hours.</p>
+        <ul class="info">
+          <li><span class="ic" style="background:var(--yellow)">📞</span><div><b>Call us</b><br><a href="tel:+919876543210">+91 98765 43210</a></div></li>
+          <li><span class="ic" style="background:var(--green)">✉️</span><div><b>Email</b><br><a href="mailto:hello@saipaintings.in">hello@saipaintings.in</a></div></li>
+          <li><span class="ic" style="background:var(--pink)">📍</span><div><b>Visit</b><br>Tamil Nadu, India</div></li>
+          <li><span class="ic" style="background:var(--blue)">🕘</span><div><b>Open</b><br>Mon – Sat · 9 AM – 7 PM</div></li>
+        </ul>
+      </div>
+      <form id="quote">
+        <label>Your name<input name="name" required placeholder="e.g. Arun"></label>
+        <label>Phone<input name="phone" type="tel" required placeholder="+91"></label>
+        <label>What needs painting?
+          <select name="service">
+            <option>Interior painting</option><option>Exterior painting</option><option>Texture / designer wall</option>
+            <option>Commercial / office</option><option>Waterproofing</option><option>Wood &amp; metal polish</option>
+          </select>
+        </label>
+        <label>Tell us more<textarea name="msg" rows="3" placeholder="Area, number of rooms, preferred colours…"></textarea></label>
+        <button class="btn" type="submit">Send on WhatsApp ✦</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="big">SAI Paintings</div>
+    <p style="margin-top:16px;opacity:.7">© <span id="yr"></span> SAI Paintings · Colour your world · Sample photos from Unsplash</p>
+  </div>
+</footer>
+
+<a class="wa" href="https://wa.me/919876543210" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.3A11.8 11.8 0 0 0 1.8 17.8L.1 24l6.3-1.7A11.8 11.8 0 0 0 23.8 12a11.7 11.7 0 0 0-3.4-8.5z"/></svg>
+</a>
+
+<script>
+const WHATSAPP = "919876543210"; // change to the real business number
+
+// mobile menu
+const links = document.getElementById("links");
+document.getElementById("burger").onclick = () => links.classList.toggle("open");
+links.querySelectorAll("a").forEach(a => a.onclick = () => links.classList.remove("open"));
+
+// rotating hero word
+const words = ["homes", "offices", "villas", "schools", "dreams"];
+const colors = ["#ff3d7f", "#3a86ff", "#2ec4a0", "#8338ec", "#ff8a1f"];
+let wi = 0; const rot = document.getElementById("rot");
+setInterval(() => { wi = (wi + 1) % words.length; rot.textContent = words[wi]; rot.style.color = colors[wi]; }, 2000);
+
+// marquee
+const shades = [["Sunset Orange","#ff8a1f"],["Bubblegum Pink","#ff3d7f"],["Mint Breeze","#2ec4a0"],["Royal Indigo","#8338ec"],["Sky Splash","#3a86ff"],["Mango Lassi","#ffd23f"],["Coral Reef","#ff6b6b"],["Forest Fern","#2d6a4f"]];
+const once = shades.map(([n,c]) => `<span><span class="sw" style="background:${c}"></span>${n}</span>`).join("");
+document.getElementById("track").innerHTML = once + once;
+
+// colour studio
+const pal = document.getElementById("palette"), wall = document.getElementById("wall"), wall2 = document.getElementById("wall2"), cname = document.getElementById("cname");
+shades.forEach(([n,c], i) => {
+  const b = document.createElement("button");
+  b.className = "pot" + (i === 0 ? " on" : ""); b.style.background = c; b.title = n; b.setAttribute("aria-label", n);
+  b.onclick = () => { wall.setAttribute("fill", c); wall2.setAttribute("fill", c); cname.textContent = n; cname.style.color = c;
+    pal.querySelectorAll(".pot").forEach(p => p.classList.remove("on")); b.classList.add("on"); };
+  pal.appendChild(b);
+});
+
+// before/after
+const range = document.getElementById("baRange"), after = document.getElementById("after"), handle = document.getElementById("handle");
+range.oninput = () => { after.style.clipPath = `inset(0 0 0 ${range.value}%)`; handle.style.left = range.value + "%"; };
+
+// reveal on scroll + counters
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add("in");
+  e.target.querySelectorAll("[data-count]").forEach(el => {
+    const end = +el.dataset.count, t0 = performance.now();
+    const tick = t => { const p = Math.min((t - t0) / 1500, 1); el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))) + "+"; if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  });
+  io.unobserve(e.target);
+}), { threshold: .15 });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+// quote form -> WhatsApp
+document.getElementById("quote").onsubmit = e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const text = `Hi SAI Paintings! I'd like a quote.\nName: ${f.get("name")}\nPhone: ${f.get("phone")}\nService: ${f.get("service")}\nDetails: ${f.get("msg")}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`, "_blank");
+};
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+// paint-brush cursor trail
+const cv = document.getElementById("trail"), ctx = cv.getContext("2d");
+const fit = () => { cv.width = innerWidth; cv.height = innerHeight; }; fit(); addEventListener("resize", fit);
+let dots = [], hue = 0;
+if (matchMedia("(pointer:fine)").matches && !matchMedia("(prefers-reduced-motion:reduce)").matches) {
+  addEventListener("mousemove", e => { hue = (hue + 4) % 360; dots.push({ x: e.clientX, y: e.clientY, r: 14, h: hue, a: .55 }); });
+  (function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    dots = dots.filter(d => (d.a -= .012) > 0);
+    for (const d of dots) { ctx.beginPath(); ctx.fillStyle = `hsla(${d.h},90%,60%,${d.a})`; ctx.arc(d.x, d.y, d.r *= .985, 0, 7); ctx.fill(); }
+    requestAnimationFrame(draw);
+  })();
+}
+</script>
+</body>
+</html>
