@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAI Paintings — Neon Edition</title>
+<meta name="description" content="SAI Paintings by Gowtham — interior, exterior, texture and commercial painting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@400;500;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0816; --bg2:#141026; --text:#f6f1ff; --mut:#b9b0d6;
+  --a1:#ff2e93; --a2:#ffb800; --a3:#00e0c6;
+  --grad:linear-gradient(120deg,var(--a1),var(--a2),var(--a3));
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;line-height:1.55}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1200px,100% - 32px);margin-inline:auto}
+.display{font-family:Unbounded,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:.95}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hand{font-family:Caveat,cursive}
+:root{transition:--a1 .6s}
+.glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);opacity:.35;transition:background .8s}
+
+/* cursor */
+.cur{position:fixed;left:0;top:0;width:44px;height:44px;border-radius:50%;border:2px solid var(--a2);pointer-events:none;z-index:200;translate:-50% -50%;transition:width .25s,height .25s,background .25s,border-color .25s;mix-blend-mode:difference}
+.cur.big{width:90px;height:90px;background:var(--a1);border-color:transparent}
+@media (pointer:coarse){.cur{display:none}}
+
+/* nav */
+nav{position:fixed;inset:16px 16px auto;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-radius:20px;
+  background:rgba(20,16,38,.55);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1)}
+.brand{display:flex;gap:10px;align-items:center;font-family:Unbounded;font-weight:700}
+.brand i{width:30px;height:30px;border-radius:9px;background:var(--grad);display:inline-block;animation:spin 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.menu{display:flex;gap:26px;font-weight:500;font-size:.95rem}
+.menu a{opacity:.75;transition:.2s}.menu a:hover{opacity:1;color:var(--a2)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:700;background:var(--grad);color:#120c22;background-size:200% 100%;transition:background-position .5s,transform .2s;border:0;font:inherit;font-weight:700;cursor:pointer}
+.pill:hover{background-position:100% 0;transform:translateY(-2px)}
+.ghost{background:transparent;color:var(--text);border:1.5px solid rgba(255,255,255,.3)}
+@media (max-width:860px){.menu{display:none}}
+
+/* ---------- HERO with spotlight reveal ---------- */
+.hero{height:100vh;min-height:640px;position:relative;overflow:hidden;display:grid;place-items:center;text-align:center}
+.layer{position:absolute;inset:0;display:grid;place-items:center;padding:0 16px 130px}
+.layer h1{font-size:clamp(3rem,11vw,10rem)}
+.base h1{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.35)}
+.reveal-layer{background:center/cover url("https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=1800&q=80");
+  -webkit-mask-image:radial-gradient(circle var(--r,190px) at var(--x,50%) var(--y,50%),#000 55%,transparent 100%);
+  mask-image:radial-gradient(circle var(--r,190px) at var(--x,50%) var(--y,50%),#000 55%,transparent 100%)}
+.reveal-layer h1{color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+.hero-ui{position:absolute;inset:auto 0 40px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:18px;padding:0 16px}
+.hero-ui p{max-width:560px;color:var(--mut);font-size:1.1rem}
+.hint{position:absolute;top:110px;left:50%;translate:-50% 0;z-index:5;font-size:1.6rem;color:var(--a2);animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.ticker{position:absolute;bottom:0;left:0;right:0;z-index:4}
+
+/* ---------- STRIP ---------- */
+.strip{background:var(--grad);color:#120c22;padding:16px 0;overflow:hidden;transform:skewY(-2deg);margin:40px 0}
+.strip .t{display:flex;gap:46px;width:max-content;animation:mq 22s linear infinite;font-family:Unbounded;font-weight:700;font-size:1.3rem;white-space:nowrap}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+section{position:relative;z-index:1}
+.sec{padding:120px 0}
+.eyebrow{font-family:Caveat;font-size:1.9rem;color:var(--a2)}
+h2{font-family:Unbounded;font-weight:900;font-size:clamp(2rem,5.5vw,4.2rem);line-height:1;letter-spacing:-.02em;margin:6px 0 18px}
+.lead{color:var(--mut);max-width:560px;font-size:1.1rem}
+
+/* ---------- HORIZONTAL SERVICES ---------- */
+.hz{height:420vh}
+.hz-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.hz-head{padding:80px 16px 0 max(16px,calc((100vw - 1200px)/2))}
+.hz-head h2{font-size:clamp(1.8rem,4vw,3.2rem)}
+.hz-track{display:flex;gap:28px;padding:30px max(16px,calc((100vw - 1200px)/2));will-change:transform}
+.svc{flex:none;width:min(420px,80vw);height:min(480px,56vh);border-radius:28px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.12)}
+.svc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.svc:hover img{transform:scale(1.08)}
+.svc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(11,8,22,.95))}
+.svc .in{position:absolute;left:0;right:0;bottom:0;padding:26px;z-index:2}
+.svc .num{font-family:Unbounded;font-weight:900;font-size:3.4rem;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--c)}
+.svc h3{font-family:Unbounded;font-size:1.5rem;margin:6px 0}
+.svc p{color:var(--mut)}
+.svc .bar{height:5px;width:60px;border-radius:5px;background:var(--c);margin-top:14px;transition:width .5s}
+.svc:hover .bar{width:100%}
+@media (max-width:800px){
+  .hz{height:auto}.hz-sticky{position:static;height:auto;padding:100px 0 40px}
+  .hz-track{overflow-x:auto;scroll-snap-type:x mandatory;transform:none!important}
+  .svc{scroll-snap-align:center}
+}
+
+/* ---------- FOUNDER ---------- */
+.founder-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.splash{position:relative;aspect-ratio:1;max-width:520px;justify-self:center;width:100%}
+.splash .bg{position:absolute;inset:0;background:var(--grad);filter:blur(40px);opacity:.6;animation:spin 14s linear infinite;border-radius:40%}
+.splash .shape{position:absolute;inset:4%;overflow:hidden;background:var(--bg2);border:3px solid rgba(255,255,255,.18);
+  border-radius:58% 42% 52% 48% / 46% 56% 44% 54%;animation:morph 10s ease-in-out infinite}
+@keyframes morph{33%{border-radius:42% 58% 38% 62% / 58% 40% 60% 42%}66%{border-radius:55% 45% 62% 38% / 40% 60% 46% 54%}}
+.splash .shape img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.splash .tagbox{position:absolute;bottom:4%;right:0;background:var(--bg2);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:14px 18px;backdrop-filter:blur(10px)}
+.splash .tagbox b{font-family:Unbounded;font-size:1.6rem;display:block}
+.name{font-size:clamp(2.6rem,7vw,5.4rem);white-space:nowrap}
+.quote{font-size:1.3rem;border-left:4px solid var(--a1);padding-left:16px;margin:22px 0;color:#fff}
+.sig{font-size:2.6rem;color:var(--a2)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.kpi{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px}
+.kpi b{font-family:Unbounded;font-size:1.8rem;display:block}
+@media (max-width:860px){.founder-grid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr 1fr}}
+
+/* ---------- THEME WHEEL ---------- */
+.wheel-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+.wheel{position:relative;width:min(440px,100%);aspect-ratio:1;justify-self:center}
+.wheel svg{width:100%;height:100%;animation:spin 40s linear infinite}
+.wheel:hover svg{animation-play-state:paused}
+.wheel path{cursor:pointer;transition:transform .3s;transform-origin:220px 220px;stroke:var(--bg);stroke-width:4}
+.wheel path:hover{transform:scale(1.06)}
+.wheel .hub{position:absolute;inset:32%;border-radius:50%;background:var(--bg2);border:1px solid rgba(255,255,255,.15);display:grid;place-items:center;text-align:center;padding:10px}
+.wheel .hub b{font-family:Unbounded;font-size:1rem}
+.swatchname{font-family:Unbounded;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900}
+.mock{margin-top:24px;border-radius:24px;overflow:hidden;position:relative;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.12)}
+.mock img{width:100%;height:100%;object-fit:cover}
+.mock .tint{position:absolute;inset:0;background:var(--a1);mix-blend-mode:color;opacity:.6;transition:background .6s}
+@media (max-width:860px){.wheel-grid{grid-template-columns:1fr}}
+
+/* ---------- STACKED GALLERY ---------- */
+.stack{position:relative;height:520px;margin-top:50px;display:flex;justify-content:center;align-items:center}
+.stack figure{position:absolute;width:min(340px,70vw);aspect-ratio:3/4;border-radius:24px;overflow:hidden;border:4px solid var(--bg2);box-shadow:0 30px 60px rgba(0,0,0,.5);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.stack figure img{width:100%;height:100%;object-fit:cover}
+.stack figcaption{position:absolute;left:12px;bottom:12px;background:rgba(11,8,22,.75);backdrop-filter:blur(8px);padding:6px 12px;border-radius:999px;font-size:.85rem;font-weight:700}
+.stack.open figure:nth-child(1){transform:translateX(-150%) rotate(-14deg)}
+.stack.open figure:nth-child(2){transform:translateX(-75%) rotate(-7deg) translateY(-20px)}
+.stack.open figure:nth-child(3){transform:translateY(-36px)}
+.stack.open figure:nth-child(4){transform:translateX(75%) rotate(7deg) translateY(-20px)}
+.stack.open figure:nth-child(5){transform:translateX(150%) rotate(14deg)}
+.stack figure:nth-child(1){transform:rotate(-4deg)}.stack figure:nth-child(2){transform:rotate(-2deg)}.stack figure:nth-child(4){transform:rotate(2deg)}.stack figure:nth-child(5){transform:rotate(4deg)}
+@media (max-width:700px){
+  .stack.open figure:nth-child(1){transform:translateX(-60%) rotate(-12deg)}
+  .stack.open figure:nth-child(2){transform:translateX(-30%) rotate(-6deg)}
+  .stack.open figure:nth-child(4){transform:translateX(30%) rotate(6deg)}
+  .stack.open figure:nth-child(5){transform:translateX(60%) rotate(12deg)}
+}
+
+/* ---------- REVIEWS carousel ---------- */
+.car{position:relative;margin-top:40px;min-height:260px}
+.rv{position:absolute;inset:0;opacity:0;transform:translateY(30px) scale(.97);transition:.7s;pointer-events:none;
+  background:linear-gradient(var(--bg2),var(--bg2)) padding-box,var(--grad) border-box;border:2px solid transparent;border-radius:28px;padding:clamp(24px,5vw,48px)}
+.rv.on{opacity:1;transform:none;pointer-events:auto}
+.rv p{font-size:clamp(1.15rem,2.4vw,1.6rem);font-weight:500}
+.rv .who{margin-top:18px;color:var(--a2);font-weight:700}
+.dots{display:flex;gap:10px;justify-content:center;margin-top:24px}
+.dots button{width:12px;height:12px;border-radius:999px;border:0;background:rgba(255,255,255,.25);cursor:pointer;transition:.3s}
+.dots button.on{width:36px;background:var(--a1)}
+
+/* ---------- CONTACT ---------- */
+.contact{overflow:hidden}
+.contact .blob{position:absolute;width:600px;height:600px;border-radius:50%;background:var(--grad);filter:blur(100px);opacity:.4;left:50%;top:50%;translate:-50% -50%;animation:spin 18s linear infinite}
+.glass{position:relative;background:rgba(20,16,38,.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.14);border-radius:32px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:1fr 1fr;gap:40px}
+form{display:grid;gap:14px}
+label{font-size:.9rem;color:var(--mut);font-weight:500}
+input,select,textarea{width:100%;margin-top:6px;font:inherit;color:var(--text);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:13px 16px}
+select option{color:#000}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--a2);box-shadow:0 0 0 4px rgba(255,184,0,.15)}
+.cinfo li{list-style:none;margin:14px 0;display:flex;gap:12px}
+.cinfo span{width:42px;height:42px;flex:none;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center}
+@media (max-width:860px){.glass{grid-template-columns:1fr}}
+
+footer{padding:60px 0 40px;text-align:center;color:var(--mut);position:relative;z-index:1}
+footer .display{font-size:clamp(3rem,14vw,11rem)}
+
+.rv-up{opacity:0;transform:translateY(50px);transition:opacity .9s,transform .9s}
+.rv-up.in{opacity:1;transform:none}
+.split span{display:inline-block;opacity:0;transform:translateY(100%) rotate(8deg);transition:.7s cubic-bezier(.2,.8,.2,1)}
+.split.in span{opacity:1;transform:none}
+
+.fab{position:fixed;right:18px;bottom:18px;z-index:90;width:60px;height:60px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 10px 30px rgba(37,211,102,.45)}
+.fab svg{width:30px;fill:#fff}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow" id="g1" style="background:var(--a1);top:-120px;left:-120px"></div>
+<div class="glow" id="g2" style="background:var(--a3);bottom:-160px;right:-120px"></div>
+<div class="cur" id="cur"></div>
+
+<nav>
+  <a href="#top" class="brand"><i></i>SAI Paintings</a>
+  <div class="menu"><a href="#services">Services</a><a href="#founder">Gowtham</a><a href="#theme">Colours</a><a href="#work">Work</a><a href="#contact">Contact</a></div>
+  <a href="#contact" class="pill">Free quote</a>
+</nav>
+
+<!-- HERO: move the mouse to paint colour through the dark -->
+<header class="hero" id="top">
+  <div class="layer base"><h1 class="display">COLOUR<br>YOUR<br>WORLD</h1></div>
+  <div class="layer reveal-layer" id="spot"><h1 class="display">COLOUR<br>YOUR<br>WORLD</h1></div>
+  <div class="hint hand">move to paint ✦</div>
+  <div class="hero-ui">
+    <p>SAI Paintings — premium interior, exterior &amp; designer walls by Gowtham and team.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a href="#contact" class="pill">Book a free site visit →</a>
+      <a href="#services" class="pill ghost">Explore services</a>
+    </div>
+  </div>
+</header>
+
+<div class="strip"><div class="t" id="strip"></div></div>
+
+<!-- HORIZONTAL SERVICES -->
+<section class="hz" id="services">
+  <div class="hz-sticky">
+    <div class="hz-head">
+      <div class="eyebrow">what we do</div>
+      <h2>Six ways to <span class="grad">transform</span> your space.</h2>
+    </div>
+    <div class="hz-track" id="track">
+      <article class="svc" style="--c:#ff2e93"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=75" alt="Living room with yellow armchair"><div class="in"><div class="num">01</div><h3>Interior</h3><p>Silky emulsions for living rooms, bedrooms &amp; kitchens.</p><div class="bar"></div></div></article>
+      <article class="svc" style="--c:#ffb800"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=75" alt="Modern house exterior"><div class="in"><div class="num">02</div><h3>Exterior</h3><p>Sun &amp; monsoon-proof coatings that last for years.</p><div class="bar"></div></div></article>
+      <article class="svc" style="--c:#00e0c6"><img src="https://images.unsplash.com/photo-1541123603104-512919d6a96c?w=900&q=75" alt="Textured wall with art"><div class="in"><div class="num">03</div><h3>Texture walls</h3><p>Stucco, metallic, rustic and stencil designs.</p><div class="bar"></div></div></article>
+      <article class="svc" style="--c:#7b61ff"><img src="https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=900&q=75" alt="Colourful office"><div class="in"><div class="num">04</div><h3>Commercial</h3><p>Offices, shops &amp; schools — painted after hours.</p><div class="bar"></div></div></article>
+      <article class="svc" style="--c:#3aa0ff"><img src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=900&q=75" alt="Roller painting blue"><div class="in"><div class="num">05</div><h3>Waterproofing</h3><p>Terraces and walls sealed against damp and leaks.</p><div class="bar"></div></div></article>
+      <article class="svc" style="--c:#ff6b3d"><img src="https://images.unsplash.com/photo-1595814433015-e6f5ce69614e?w=900&q=75" alt="People with paint brushes"><div class="in"><div class="num">06</div><h3>Wood &amp; metal</h3><p>PU, enamel &amp; melamine finishes that shine.</p><div class="bar"></div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="sec" id="founder">
+  <div class="wrap founder-grid">
+    <div class="splash rv-up">
+      <div class="bg"></div>
+      <div class="shape"><img src="images/gowtham.jpg" alt="Gowtham, founder of SAI Paintings"></div>
+      <div class="tagbox"><b class="grad">12+ yrs</b>of painting experience</div>
+    </div>
+    <div class="rv-up">
+      <div class="eyebrow">founder &amp; lead painter</div>
+      <h2 class="name split">Gowtham</h2>
+      <p class="lead">He started SAI Paintings with one ladder and one promise — treat every home like his own. Today he leads a crew of skilled painters and still checks every site personally.</p>
+      <p class="quote">“Every wall has a mood. I just help it find the right colour.”</p>
+      <div class="kpis">
+        <div class="kpi"><b class="grad" data-count="850">0</b>projects</div>
+        <div class="kpi"><b class="grad" data-count="35">0</b>painters</div>
+        <div class="kpi"><b class="grad" data-count="98">0</b>% repeat</div>
+      </div>
+      <span class="sig hand">— Gowtham</span>
+    </div>
+  </div>
+</section>
+
+<!-- THEME WHEEL -->
+<section class="sec" id="theme" style="background:var(--bg2)">
+  <div class="wrap wheel-grid">
+    <div class="wheel rv-up">
+      <svg viewBox="0 0 440 440" id="wheel" aria-label="Colour wheel"></svg>
+      <div class="hub"><div><b>Tap a<br>colour</b></div></div>
+    </div>
+    <div class="rv-up">
+      <div class="eyebrow">colour lab</div>
+      <h2>Spin the wheel.<br><span class="grad">Re-theme</span> this site.</h2>
+      <p class="lead">Every colour you tap changes the whole website — buttons, glows, headings. Imagine what it does for your walls.</p>
+      <div class="swatchname grad" id="sname" style="margin-top:18px">Neon Rose</div>
+      <div class="mock"><img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=75" alt="Room preview"><div class="tint" id="tint"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STACKED GALLERY -->
+<section class="sec" id="work">
+  <div class="wrap" style="text-align:center">
+    <div class="eyebrow">recent work</div>
+    <h2>Fresh off the <span class="grad">brush.</span></h2>
+    <p class="lead" style="margin:auto">Scroll down and the stack fans out.</p>
+    <div class="stack" id="stack">
+      <figure><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=75" alt="Living room"><figcaption>Villa · Coimbatore</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=600&q=75" alt="Open plan home"><figcaption>Apartment · Chennai</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1617104551722-3b2d51366400?w=600&q=75" alt="Blue dining room"><figcaption>Dining · Tiruppur</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=75" alt="White kitchen"><figcaption>Kitchen · Salem</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=600&q=75" alt="Colourful stripes"><figcaption>Play school · Erode</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec" style="padding-top:40px">
+  <div class="wrap">
+    <div class="eyebrow">kind words</div>
+    <h2>Loved by <span class="grad">happy homes.</span></h2>
+    <div class="car" id="car">
+      <div class="rv on"><p>“Our full 3BHK was done in 6 days and the house was cleaner than before. Gowtham personally helped us pick the teal for our bedroom.”</p><div class="who">★★★★★ · Priya R., Coimbatore</div></div>
+      <div class="rv"><p>“They painted our shop front at night so we never closed for a single day. Looks brand new.”</p><div class="who">★★★★★ · Karthik S., Tiruppur</div></div>
+      <div class="rv"><p>“The texture wall in our hall gets compliments from every guest. Fair price, honest advice.”</p><div class="who">★★★★★ · Meena &amp; Ravi, Salem</div></div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec contact" id="contact">
+  <div class="blob"></div>
+  <div class="wrap">
+    <div class="glass rv-up">
+      <div>
+        <div class="eyebrow">let's talk</div>
+        <h2>Your walls are <span class="grad">waiting.</span></h2>
+        <p class="lead">Send your details — Gowtham will WhatsApp you back with a free quote.</p>
+        <ul class="cinfo">
+          <li><span>📞</span><div><b>Call</b><br><a href="tel:+919876543210">+91 98765 43210</a></div></li>
+          <li><span>✉️</span><div><b>Email</b><br><a href="mailto:hello@saipaintings.in">hello@saipaintings.in</a></div></li>
+          <li><span>📍</span><div><b>Area</b><br>Tamil Nadu, India</div></li>
+        </ul>
+      </div>
+      <form id="quote">
+        <label>Name<input name="name" required></label>
+        <label>Phone<input name="phone" type="tel" required placeholder="+91"></label>
+        <label>Service<select name="service"><option>Interior</option><option>Exterior</option><option>Texture walls</option><option>Commercial</option><option>Waterproofing</option><option>Wood &amp; metal</option></select></label>
+        <label>Details<textarea name="msg" rows="3" placeholder="Rooms, area, colours you like…"></textarea></label>
+        <button class="pill" type="submit" style="justify-content:center">Send on WhatsApp →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="display grad">SAI</div>
+  <p>© <span id="yr"></span> SAI Paintings · Founded by Gowtham · <a href="index.html" style="text-decoration:underline">See design 1</a> · Photos: Unsplash</p>
+</footer>
+
+<a class="fab" href="https://wa.me/919876543210" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.3A11.8 11.8 0 0 0 1.8 17.8L.1 24l6.3-1.7A11.8 11.8 0 0 0 23.8 12a11.7 11.7 0 0 0-3.4-8.5z"/></svg></a>
+
+<script>
+const WHATSAPP = "919876543210"; // change to the real business number
+const fine = matchMedia("(pointer:fine)").matches;
+const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const root = document.documentElement;
+
+// custom cursor
+const cur = document.getElementById("cur");
+if (fine) {
+  addEventListener("mousemove", e => { cur.style.left = e.clientX + "px"; cur.style.top = e.clientY + "px"; });
+  document.querySelectorAll("a,button,.svc,.wheel path,.stack").forEach(el => {
+    el.addEventListener("mouseenter", () => cur.classList.add("big"));
+    el.addEventListener("mouseleave", () => cur.classList.remove("big"));
+  });
+}
+
+// hero spotlight: follows the mouse; drifts on its own on touch screens
+const spot = document.getElementById("spot"), hero = document.getElementById("top");
+let sx = innerWidth / 2, sy = innerHeight / 2, tx = sx, ty = sy, t = 0, moved = false;
+hero.addEventListener("mousemove", e => { moved = true; const r = hero.getBoundingClientRect(); tx = e.clientX - r.left; ty = e.clientY - r.top; });
+(function loop() {
+  t += .012;
+  if (!moved) { tx = hero.clientWidth / 2 + Math.cos(t) * hero.clientWidth * .28; ty = hero.clientHeight / 2 + Math.sin(t * 1.4) * hero.clientHeight * .2; }
+  sx += (tx - sx) * .12; sy += (ty - sy) * .12;
+  spot.style.setProperty("--x", sx + "px"); spot.style.setProperty("--y", sy + "px");
+  spot.style.setProperty("--r", (170 + Math.sin(t * 3) * 25) + "px");
+  if (!calm) requestAnimationFrame(loop);
+})();
+
+// strip marquee
+const words = ["Interior", "Exterior", "Texture", "Waterproofing", "Commercial", "Wood polish"];
+const s = words.map(w => `<span>${w} ✦</span>`).join("");
+document.getElementById("strip").innerHTML = s + s + s + s;
+
+// horizontal scroll services (desktop)
+const hz = document.getElementById("services"), track = document.getElementById("track");
+function hScroll() {
+  if (innerWidth <= 800) return;
+  const r = hz.getBoundingClientRect(), max = hz.offsetHeight - innerHeight;
+  const p = Math.min(Math.max(-r.top / max, 0), 1);
+  track.style.transform = `translateX(${-p * (track.scrollWidth - innerWidth)}px)`;
+}
+addEventListener("scroll", hScroll, { passive: true }); addEventListener("resize", hScroll);
+
+// split name letters
+document.querySelectorAll(".split").forEach(el => {
+  el.innerHTML = [...el.textContent].map((c, i) => `<span style="transition-delay:${i * .06}s">${c}</span>`).join("");
+});
+
+// reveals + counters + gallery fan
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add("in");
+  e.target.querySelectorAll(".split").forEach(x => x.classList.add("in"));
+  e.target.querySelectorAll("[data-count]").forEach(el => {
+    const end = +el.dataset.count, t0 = performance.now();
+    const tick = n => { const p = Math.min((n - t0) / 1600, 1); el.textContent = Math.round(end * (1 - (1 - p) ** 3)) + (end === 98 ? "" : "+"); if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  });
+  io.unobserve(e.target);
+}), { threshold: .2 });
+document.querySelectorAll(".rv-up").forEach(el => io.observe(el));
+const stack = document.getElementById("stack");
+new IntersectionObserver(([e]) => stack.classList.toggle("open", e.isIntersecting), { threshold: .6 }).observe(stack);
+
+// theme wheel: each segment re-themes the whole site
+const themes = [
+  ["Neon Rose", "#ff2e93", "#ffb800", "#00e0c6"], ["Mango Burst", "#ffb800", "#ff5e3a", "#ff2e93"],
+  ["Lagoon", "#00e0c6", "#3aa0ff", "#b5ff3a"], ["Royal Violet", "#7b61ff", "#ff2e93", "#3aa0ff"],
+  ["Sky Splash", "#3aa0ff", "#00e0c6", "#ffe14d"], ["Lime Pop", "#b5ff3a", "#00e0c6", "#ffb800"],
+  ["Coral Sunset", "#ff6b3d", "#ffb800", "#ff2e93"], ["Berry Night", "#c13cff", "#ff2e93", "#ffb800"]
+];
+const wheel = document.getElementById("wheel"), n = themes.length, R = 210, C = 220;
+themes.forEach((th, i) => {
+  const a0 = (i / n) * Math.PI * 2 - Math.PI / 2, a1 = ((i + 1) / n) * Math.PI * 2 - Math.PI / 2;
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  p.setAttribute("d", `M${C} ${C}L${C + R * Math.cos(a0)} ${C + R * Math.sin(a0)}A${R} ${R} 0 0 1 ${C + R * Math.cos(a1)} ${C + R * Math.sin(a1)}Z`);
+  p.setAttribute("fill", th[1]);
+  p.innerHTML = `<title>${th[0]}</title>`;
+  p.addEventListener("click", () => {
+    root.style.setProperty("--a1", th[1]); root.style.setProperty("--a2", th[2]); root.style.setProperty("--a3", th[3]);
+    document.getElementById("sname").textContent = th[0];
+  });
+  wheel.appendChild(p);
+});
+
+// reviews carousel
+const slides = [...document.querySelectorAll(".rv")], dots = document.getElementById("dots");
+let cur_i = 0;
+const show = i => { cur_i = i; slides.forEach((s, k) => s.classList.toggle("on", k === i)); [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i)); };
+slides.forEach((_, i) => { const b = document.createElement("button"); b.setAttribute("aria-label", "Review " + (i + 1)); b.onclick = () => show(i); dots.appendChild(b); });
+show(0); setInterval(() => show((cur_i + 1) % slides.length), 5000);
+
+// glows follow scroll
+addEventListener("scroll", () => {
+  const y = scrollY * .15;
+  document.getElementById("g1").style.transform = `translateY(${y % 400}px)`;
+  document.getElementById("g2").style.transform = `translateY(${-(y % 400)}px)`;
+}, { passive: true });
+
+// form -> WhatsApp
+document.getElementById("quote").onsubmit = e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const text = `Hi Gowtham / SAI Paintings! I'd like a quote.\nName: ${f.get("name")}\nPhone: ${f.get("phone")}\nService: ${f.get("service")}\nDetails: ${f.get("msg")}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`, "_blank");
+};
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
