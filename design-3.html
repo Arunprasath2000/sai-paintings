@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAI Paintings — Chat, Estimate, Book</title>
+<meta name="description" content="SAI Paintings by Gowtham. Chat on WhatsApp, get an instant price estimate and book a free site visit.">
+<meta name="theme-color" content="#075e54">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans+Tamil:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wa:#25d366; --wa-dark:#075e54; --wa-teal:#128c7e; --wa-bg:#efeae2; --bubble:#d9fdd3;
+  --ink:#111b21; --mut:#667781; --line:#e9edef; --card:#fff; --soft:#f6f8f7;
+  --paint1:#ff6b3d; --paint2:#ffc531; --paint3:#7c5cff; --paint4:#ff3d8b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Plus Jakarta Sans","Noto Sans Tamil",system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.55;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+.wrap{width:min(1160px,100% - 32px);margin-inline:auto}
+.paintline{height:6px;background:linear-gradient(90deg,var(--paint1),var(--paint2),var(--wa),var(--paint3),var(--paint4))}
+
+/* ---------- top bar + nav ---------- */
+.topbar{background:var(--wa-dark);color:#fff;font-size:.85rem}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;flex-wrap:wrap}
+.status{display:inline-flex;align-items:center;gap:8px}
+.status i{width:9px;height:9px;border-radius:50%;background:#aaa}
+.status.open i{background:var(--wa);box-shadow:0 0 0 0 rgba(37,211,102,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+.lang{display:inline-flex;background:rgba(255,255,255,.15);border-radius:999px;padding:3px}
+.lang button{border:0;background:none;color:#fff;padding:4px 12px;border-radius:999px;font-weight:700;font-size:.82rem}
+.lang button.on{background:#fff;color:var(--wa-dark)}
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem}
+.brand .logo{width:38px;height:38px;border-radius:12px;background:conic-gradient(var(--paint1),var(--paint2),var(--wa),var(--paint3),var(--paint4),var(--paint1));display:grid;place-items:center;color:#fff;font-size:1.1rem}
+.nlinks{display:flex;gap:6px}
+.nlinks a{padding:8px 14px;border-radius:999px;font-weight:600;color:#3b4a54;font-size:.95rem}
+.nlinks a:hover{background:var(--soft);color:var(--wa-dark)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font-weight:700;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 8px 24px rgba(37,211,102,.35)}
+.btn-dark{background:var(--wa-dark);color:#fff}
+.btn-line{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn svg{width:20px;height:20px;fill:currentColor}
+@media (max-width:900px){.nlinks{display:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:70px 0 90px;background:radial-gradient(900px 500px at 85% 20%,#e7fbe9,transparent 60%),radial-gradient(700px 400px at 0% 100%,#fff1e8,transparent 60%)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;font-weight:600;font-size:.9rem;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.chip img{width:30px;height:30px;border-radius:50%;object-fit:cover;object-position:50% 20%}
+h1{font-size:clamp(2.4rem,5.6vw,4.3rem);line-height:1.05;letter-spacing:-.03em;margin:20px 0 16px;font-weight:800}
+h1 .pop{background:linear-gradient(90deg,var(--paint1),var(--paint4),var(--paint3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:1.15rem;color:var(--mut);max-width:520px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 22px}
+.ticks{display:flex;gap:18px;flex-wrap:wrap;color:#3b4a54;font-weight:600;font-size:.95rem}
+.ticks span::before{content:"✓ ";color:var(--wa)}
+
+/* phone mockup with live WhatsApp-style chat */
+.phone{width:min(330px,100%);justify-self:center;border-radius:42px;background:#111;padding:12px;box-shadow:0 40px 80px rgba(7,94,84,.25),0 0 0 2px #2a2a2a inset;position:relative}
+.phone .screen{border-radius:32px;overflow:hidden;background:var(--wa-bg);height:560px;display:flex;flex-direction:column}
+.wa-head{background:var(--wa-dark);color:#fff;display:flex;align-items:center;gap:10px;padding:14px 14px 12px}
+.wa-head img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 20%}
+.wa-head b{display:block;font-size:.95rem;line-height:1.2}
+.wa-head small{opacity:.85;font-size:.75rem}
+.wa-body{flex:1;overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:6px;
+  background-color:var(--wa-bg);background-image:radial-gradient(rgba(0,0,0,.035) 1.5px,transparent 1.5px);background-size:18px 18px}
+.wa-body > *{flex-shrink:0}
+.msg{max-width:82%;padding:7px 10px 18px;border-radius:10px;font-size:.88rem;position:relative;box-shadow:0 1px .5px rgba(0,0,0,.13);animation:msgIn .35s ease;white-space:pre-line;word-wrap:break-word}
+.msg .tm{position:absolute;right:8px;bottom:3px;font-size:.66rem;color:var(--mut)}
+.msg.in{background:#fff;align-self:flex-start;border-top-left-radius:0}
+.msg.out{background:var(--bubble);align-self:flex-end;border-top-right-radius:0}
+.msg.out .tm::after{content:" ✓✓";color:#53bdeb}
+.msg img{border-radius:8px;margin-bottom:4px}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px) scale(.97)}}
+.typing{align-self:flex-start;background:#fff;border-radius:10px;padding:10px 14px;display:flex;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#9aa6ac;animation:bounce 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:none}30%{transform:translateY(-5px)}}
+.wa-foot{display:flex;gap:8px;padding:8px;align-items:center;background:var(--wa-bg)}
+.wa-foot .fake{flex:1;background:#fff;border-radius:999px;padding:10px 14px;color:var(--mut);font-size:.85rem}
+.wa-foot .send{width:42px;height:42px;border-radius:50%;background:var(--wa-teal);display:grid;place-items:center;color:#fff;border:0}
+.float-badge{position:absolute;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 12px 30px rgba(0,0,0,.12);font-weight:700;font-size:.85rem;animation:float 4s ease-in-out infinite}
+.float-badge b{display:block;font-size:1.3rem;color:var(--wa-dark)}
+@keyframes float{50%{transform:translateY(-10px)}}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.float-badge{display:none}}
+
+/* ---------- sections ---------- */
+.sec{padding:90px 0}
+.sec.alt{background:var(--soft)}
+.eyebrow{display:inline-block;color:var(--wa-teal);font-weight:800;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
+html[lang=ta] .eyebrow{letter-spacing:0;font-size:.95rem}
+html[lang=ta] h1,html[lang=ta] h2{letter-spacing:0;line-height:1.25}
+h2{font-size:clamp(1.9rem,4vw,2.9rem);letter-spacing:-.02em;line-height:1.1;margin:8px 0 12px;font-weight:800}
+.lead{color:var(--mut);max-width:600px;font-size:1.05rem}
+
+/* quick action tiles */
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:-50px;position:relative;z-index:2}
+.qa{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 14px 40px rgba(0,0,0,.06);transition:transform .2s,border-color .2s;text-align:left;display:block}
+.qa:hover{transform:translateY(-4px);border-color:var(--wa)}
+.qa .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;margin-bottom:12px}
+.qa b{display:block;font-size:1.05rem}
+.qa span{color:var(--mut);font-size:.9rem}
+@media (max-width:900px){.quick{grid-template-columns:1fr 1fr}}
+
+/* services */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+.svc{background:#fff;border-radius:22px;overflow:hidden;border:1px solid var(--line);transition:box-shadow .25s,transform .25s;display:flex;flex-direction:column}
+.svc:hover{box-shadow:0 20px 50px rgba(0,0,0,.08);transform:translateY(-4px)}
+.svc .im{aspect-ratio:16/10;overflow:hidden;position:relative}
+.svc .im img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.svc:hover .im img{transform:scale(1.06)}
+.svc .price{position:absolute;left:12px;top:12px;background:#fff;border-radius:999px;padding:4px 12px;font-weight:700;font-size:.8rem}
+.svc .bd{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.svc h3{font-size:1.15rem}
+.svc p{color:var(--mut);font-size:.93rem;flex:1}
+.svc .ask{align-self:flex-start;color:var(--wa-teal);font-weight:700;background:none;border:0;padding:0;display:inline-flex;gap:6px;align-items:center}
+.svc .ask:hover{text-decoration:underline}
+@media (max-width:900px){.svc-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.svc-grid{grid-template-columns:1fr}}
+
+/* tools: estimator + paint calc */
+.tools{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:36px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(20px,3vw,32px)}
+.panel h3{font-size:1.25rem;margin-bottom:4px}
+.panel .hint{color:var(--mut);font-size:.9rem;margin-bottom:18px}
+.field{margin-bottom:16px}
+.field > label{display:block;font-weight:700;font-size:.9rem;margin-bottom:8px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:600;font-size:.88rem;transition:.15s}
+.seg button.on{background:var(--wa-dark);border-color:var(--wa-dark);color:#fff}
+input[type=range]{width:100%;accent-color:var(--wa-teal)}
+.rangeval{display:flex;justify-content:space-between;font-weight:700;margin-top:4px}
+input[type=text],input[type=tel],input[type=date],input[type=number],textarea,select{width:100%;font:inherit;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--wa-teal);box-shadow:0 0 0 4px rgba(18,140,126,.12)}
+.result{background:linear-gradient(135deg,var(--wa-dark),var(--wa-teal));color:#fff;border-radius:20px;padding:20px 22px;margin:8px 0 16px}
+.result small{opacity:.85}
+.result .big{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;display:block}
+.litres{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 16px}
+.litres div{background:var(--soft);border-radius:16px;padding:14px}
+.litres b{font-size:1.6rem;display:block;color:var(--wa-dark)}
+.note{font-size:.8rem;color:var(--mut)}
+@media (max-width:900px){.tools{grid-template-columns:1fr}}
+
+/* booking */
+.book{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px;align-items:start;margin-top:36px}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slots button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px;font-weight:600;font-size:.88rem}
+.slots button.on{background:var(--bubble);border-color:var(--wa);color:var(--wa-dark)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.steps li{list-style:none;display:flex;gap:14px;margin:18px 0}
+.steps .n{width:36px;height:36px;flex:none;border-radius:50%;background:var(--bubble);color:var(--wa-dark);display:grid;place-items:center;font-weight:800}
+@media (max-width:900px){.book{grid-template-columns:1fr}}
+
+/* owner */
+.owner{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:28px;padding:clamp(20px,4vw,40px);margin-top:36px}
+.owner .ph{width:min(260px,70vw);aspect-ratio:3/4;border-radius:24px;overflow:hidden;position:relative}
+.owner .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.owner .ph .on{position:absolute;left:12px;bottom:12px;background:#fff;border-radius:999px;padding:4px 12px 4px 8px;font-size:.8rem;font-weight:700;display:flex;gap:6px;align-items:center}
+.owner .ph .on i{width:8px;height:8px;border-radius:50%;background:var(--wa)}
+.owner .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:18px}
+.stats b{font-size:1.7rem;display:block;color:var(--wa-dark)}
+.stats span{color:var(--mut);font-size:.9rem}
+@media (max-width:760px){.owner{grid-template-columns:1fr;justify-items:center;text-align:center}.owner .acts,.stats{justify-content:center}}
+
+/* gallery with lightbox */
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:12px;margin-top:36px}
+.gal button{border:0;padding:0;border-radius:18px;overflow:hidden;position:relative}
+.gal button:nth-child(1){grid-row:span 2;grid-column:span 2}
+.gal img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.gal button:hover img{transform:scale(1.06)}
+.gal button span{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;place-items:center;padding:16px}
+.lb.show{display:grid}
+.lb img{max-height:80vh;border-radius:16px}
+.lb .x{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;font-size:1.3rem}
+.lb .cap{color:#fff;text-align:center;margin-top:10px;font-weight:600}
+@media (max-width:760px){.gal{grid-template-columns:1fr 1fr;grid-auto-rows:150px}}
+
+/* reviews */
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.rev{background:var(--wa-bg);border-radius:20px;padding:18px}
+.rev .msg{max-width:100%;animation:none}
+.rev .who{display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:700;font-size:.9rem}
+.rev .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.85rem}
+@media (max-width:900px){.revs{grid-template-columns:1fr}}
+
+/* faq */
+.faq{max-width:780px;margin:36px auto 0}
+details{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin-bottom:10px}
+summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font-size:1.3rem;color:var(--wa-teal);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--mut);margin-top:10px}
+
+footer{background:var(--wa-dark);color:#d9e6e3;padding:50px 0 30px}
+footer .fgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:30px}
+footer h4{color:#fff;margin-bottom:10px}
+footer a:hover{color:#fff;text-decoration:underline}
+footer .copy{border-top:1px solid rgba(255,255,255,.15);margin-top:30px;padding-top:18px;font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media (max-width:760px){footer .fgrid{grid-template-columns:1fr}}
+
+/* ---------- chat assistant ---------- */
+.fab{position:fixed;right:20px;bottom:20px;z-index:200;width:62px;height:62px;border-radius:50%;background:var(--wa);border:0;box-shadow:0 10px 30px rgba(37,211,102,.45);display:grid;place-items:center}
+.fab svg{width:32px;height:32px;fill:#fff}
+.fab .dot{position:absolute;top:2px;right:2px;min-width:20px;height:20px;border-radius:999px;background:#ff3b30;color:#fff;font-size:.72rem;font-weight:800;display:grid;place-items:center;border:2px solid #fff}
+.peek{position:fixed;right:92px;bottom:30px;z-index:199;background:#fff;border-radius:16px 16px 4px 16px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.15);font-size:.9rem;font-weight:600;max-width:230px;animation:msgIn .4s ease;cursor:pointer}
+.chat{position:fixed;right:20px;bottom:96px;z-index:250;width:min(380px,calc(100vw - 24px));height:min(600px,calc(100vh - 120px));border-radius:22px;overflow:hidden;display:none;flex-direction:column;background:var(--wa-bg);box-shadow:0 30px 80px rgba(0,0,0,.3);transform-origin:bottom right}
+.chat.show{display:flex;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:scale(.9)}}
+.chat .wa-head .close{margin-left:auto;background:none;border:0;color:#fff;font-size:1.4rem;width:34px;height:34px;border-radius:50%}
+.chat .wa-head .close:hover{background:rgba(255,255,255,.15)}
+.chat .quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:0 10px 6px;justify-content:flex-end}
+.chat .quick-replies button{border:1.5px solid var(--wa-teal);background:#fff;color:var(--wa-teal);border-radius:999px;padding:6px 12px;font-weight:600;font-size:.85rem;animation:msgIn .3s ease}
+.chat .quick-replies button:hover{background:var(--wa-teal);color:#fff}
+.chat form{display:flex;gap:8px;padding:8px;background:var(--wa-bg)}
+.chat form input{border-radius:999px;border:0;padding:11px 16px}
+.chat form button{width:44px;height:44px;flex:none;border-radius:50%;border:0;background:var(--wa-teal);color:#fff;display:grid;place-items:center}
+.chat form button svg{width:20px;fill:#fff}
+.chat .sendwa{align-self:center;margin:6px 0}
+@media (max-width:480px){.chat{right:12px;bottom:88px}.peek{right:84px}}
+
+.toast{position:fixed;left:50%;bottom:30px;translate:-50% 0;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="status" id="status"><i></i><span id="statusText">Checking hours…</span></span>
+    <span style="display:flex;gap:14px;align-items:center">
+      <a href="tel:+919876543210">📞 +91 98765 43210</a>
+      <span class="lang" role="group" aria-label="Language"><button class="on" data-lang="en">EN</button><button data-lang="ta">தமிழ்</button></span>
+    </span>
+  </div>
+</div>
+<div class="paintline"></div>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="brand"><span class="logo">🖌</span>SAI Paintings</a>
+    <div class="nlinks">
+      <a href="#services" data-i18n="nav_services">Services</a>
+      <a href="#estimate" data-i18n="nav_estimate">Estimate</a>
+      <a href="#book" data-i18n="nav_book">Book visit</a>
+      <a href="#work" data-i18n="nav_work">Our work</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+    </div>
+    <button class="btn btn-wa" data-open-chat><svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg><span data-i18n="chat">Chat now</span></button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="chip"><img src="images/gowtham.jpg" alt="">Gowtham · Founder · replies in minutes</span>
+      <h1 data-i18n-html="hero_h1">Your home,<br><span class="pop">beautifully painted.</span></h1>
+      <p class="sub" data-i18n="hero_sub">Chat with us on WhatsApp, get an instant price estimate and book a free site visit — all in under 2 minutes.</p>
+      <div class="ctas">
+        <button class="btn btn-wa" data-open-chat><svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg><span data-i18n="cta_chat">Chat on WhatsApp</span></button>
+        <a href="#estimate" class="btn btn-line" data-i18n="cta_est">Get instant estimate →</a>
+      </div>
+      <div class="ticks" data-i18n-html="ticks"><span>Free site visit</span><span>Clean work</span><span>On-time finish</span></div>
+    </div>
+    <div style="position:relative;justify-self:center">
+      <div class="phone">
+        <div class="screen">
+          <div class="wa-head"><img src="images/gowtham.jpg" alt=""><div><b>SAI Paintings</b><small id="demoStatus">online</small></div></div>
+          <div class="wa-body" id="demo"></div>
+          <div class="wa-foot"><div class="fake">Message</div><button class="send" aria-label="Open chat" data-open-chat>➤</button></div>
+        </div>
+      </div>
+      <div class="float-badge" style="left:-70px;top:90px"><b>4.9 ★</b>Google rating</div>
+      <div class="float-badge" style="right:-50px;bottom:110px;animation-delay:-2s"><b>~5 min</b>reply time</div>
+    </div>
+  </div>
+</header>
+
+<!-- quick actions -->
+<div class="wrap quick">
+  <button class="qa rv" data-open-chat><div class="ic" style="background:#d9fdd3">💬</div><b data-i18n="qa1">Chat with us</b><span data-i18n="qa1s">Guided quote in 1 minute</span></button>
+  <a href="#estimate" class="qa rv"><div class="ic" style="background:#fff1e0">🧮</div><b data-i18n="qa2">Price estimate</b><span data-i18n="qa2s">See your cost instantly</span></a>
+  <a href="#book" class="qa rv"><div class="ic" style="background:#ece6ff">📅</div><b data-i18n="qa3">Book visit</b><span data-i18n="qa3s">Pick a date & time</span></a>
+  <button class="qa rv" id="saveContact"><div class="ic" style="background:#ffe6ef">📇</div><b data-i18n="qa4">Save contact</b><span data-i18n="qa4s">Add Gowtham to your phone</span></button>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="svc_eye">Services</span>
+    <h2 data-i18n="svc_h">What can we paint for you?</h2>
+    <p class="lead" data-i18n="svc_p">Tap "Ask on WhatsApp" on any service and the chat opens with your question already typed.</p>
+    <div class="svc-grid" id="svcGrid"></div>
+  </div>
+</section>
+
+<!-- ============ ESTIMATOR ============ -->
+<section class="sec alt" id="estimate">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="est_eye">Instant estimate</span>
+    <h2 data-i18n="est_h">Know your budget before we visit.</h2>
+    <p class="lead" data-i18n="est_p">Move the sliders — the price updates live. Send it to us on WhatsApp to lock in a free site visit.</p>
+    <div class="tools">
+      <div class="panel rv">
+        <h3>🧮 Price estimator</h3>
+        <p class="hint">Sample rates for guidance — final price after a free site visit.</p>
+        <div class="field"><label>Service</label><div class="seg" id="eSvc"></div></div>
+        <div class="field"><label>Home size (quick fill)</label><div class="seg" id="eBhk"></div></div>
+        <div class="field">
+          <label for="eArea">Paintable area</label>
+          <input type="range" id="eArea" min="200" max="8000" step="50" value="2800">
+          <div class="rangeval"><span id="eAreaVal">2,800 sq ft</span><span class="note">walls + ceiling</span></div>
+        </div>
+        <div class="field"><label>Paint quality</label><div class="seg" id="eGrade"></div></div>
+        <div class="result"><small>Estimated cost</small><span class="big" id="eTotal">₹—</span><small id="eDays">—</small></div>
+        <button class="btn btn-wa" id="eSend" style="width:100%"><svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg>Send this estimate on WhatsApp</button>
+      </div>
+      <div class="panel rv">
+        <h3>🪣 Paint calculator</h3>
+        <p class="hint">How much paint will you need?</p>
+        <div class="row2">
+          <div class="field"><label for="pLen">Room length (ft)</label><input type="number" id="pLen" value="12" min="1"></div>
+          <div class="field"><label for="pWid">Room width (ft)</label><input type="number" id="pWid" value="10" min="1"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="pHt">Height (ft)</label><input type="number" id="pHt" value="10" min="1"></div>
+          <div class="field"><label for="pDoors">Doors + windows</label><input type="number" id="pDoors" value="2" min="0"></div>
+        </div>
+        <div class="field"><label>Coats</label><div class="seg" id="pCoats"></div></div>
+        <div class="litres">
+          <div><b id="pPaint">—</b>litres of paint</div>
+          <div><b id="pPrimer">—</b>litres of primer</div>
+        </div>
+        <p class="note" id="pArea">—</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOK VISIT ============ -->
+<section class="sec" id="book">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="book_eye">Free site visit</span>
+    <h2 data-i18n="book_h">Book a visit in 30 seconds.</h2>
+    <div class="book">
+      <div class="rv">
+        <p class="lead">Pick a date and time. Your booking goes straight to Gowtham's WhatsApp — he'll confirm within minutes.</p>
+        <ol class="steps">
+          <li><span class="n">1</span><div><b>Pick a slot</b><br><span class="note">Mon – Sat, 9 AM to 7 PM</span></div></li>
+          <li><span class="n">2</span><div><b>We visit &amp; measure</b><br><span class="note">Free shade cards &amp; honest advice</span></div></li>
+          <li><span class="n">3</span><div><b>Get a fixed quote</b><br><span class="note">No hidden charges, ever</span></div></li>
+        </ol>
+      </div>
+      <form class="panel rv" id="bookForm">
+        <div class="row2">
+          <div class="field"><label for="bName">Name</label><input type="text" id="bName" required placeholder="Your name"></div>
+          <div class="field"><label for="bPhone">Phone</label><input type="tel" id="bPhone" required placeholder="+91"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="bDate">Date</label><input type="date" id="bDate" required></div>
+          <div class="field"><label for="bArea">Area / city</label><input type="text" id="bArea" required placeholder="e.g. RS Puram, Coimbatore"></div>
+        </div>
+        <div class="field"><label>Time</label><div class="slots" id="bSlots"></div></div>
+        <div class="field"><label for="bNote">Anything else? (optional)</label><textarea id="bNote" rows="2" placeholder="Rooms, colours you like…"></textarea></div>
+        <button class="btn btn-wa" type="submit" style="width:100%"><svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg>Confirm on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OWNER ============ -->
+<section class="sec alt">
+  <div class="wrap">
+    <span class="eyebrow">Founder</span>
+    <h2 data-i18n="own_h">Meet Gowtham.</h2>
+    <div class="owner rv">
+      <div class="ph"><img src="images/gowtham.jpg" alt="Gowtham, founder of SAI Paintings"><span class="on"><i></i>Usually replies in 5 min</span></div>
+      <div>
+        <p style="font-size:1.15rem">“I started SAI Paintings with one brush and one promise — treat every home like my own. I still visit every site myself, and I personally answer your WhatsApp messages.”</p>
+        <div class="stats">
+          <div><b>12+</b><span>years</span></div>
+          <div><b>850+</b><span>projects</span></div>
+          <div><b>35</b><span>painters</span></div>
+          <div><b>4.9★</b><span>rating</span></div>
+        </div>
+        <div class="acts">
+          <button class="btn btn-wa" data-open-chat><svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg>Message Gowtham</button>
+          <a class="btn btn-line" href="tel:+919876543210">📞 Call</a>
+          <button class="btn btn-line" id="shareBtn">🔗 Share this page</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="work_eye">Our work</span>
+    <h2 data-i18n="work_h">Recent projects.</h2>
+    <p class="lead">Tap any photo to view it larger.</p>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+<div class="lb" id="lb"><button class="x" aria-label="Close">✕</button><div><img id="lbImg" alt=""><div class="cap" id="lbCap"></div></div></div>
+
+<!-- ============ REVIEWS ============ -->
+<section class="sec alt">
+  <div class="wrap">
+    <span class="eyebrow">Reviews</span>
+    <h2>Messages from happy customers.</h2>
+    <div class="revs">
+      <div class="rev rv"><div class="msg in">Full 3BHK done in 6 days and the house was cleaner than before! The teal bedroom is perfect 😍<span class="tm">9:41 pm</span></div><div class="who"><span class="av" style="background:#ff6b3d">P</span>Priya R. · Coimbatore</div></div>
+      <div class="rev rv"><div class="msg in">They painted our shop at night so we never closed. Very professional team 👏<span class="tm">7:15 pm</span></div><div class="who"><span class="av" style="background:#7c5cff">K</span>Karthik S. · Tiruppur</div></div>
+      <div class="rev rv"><div class="msg in">Every guest asks about our texture wall. Fair price and honest advice. Thank you Gowtham anna 🙏<span class="tm">11:02 am</span></div><div class="who"><span class="av" style="background:#ff3d8b">M</span>Meena &amp; Ravi · Salem</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div style="text-align:center"><span class="eyebrow">FAQ</span><h2 data-i18n="faq_h">Questions? Answers.</h2></div>
+    <div class="faq">
+      <details><summary>Is the site visit really free?</summary><p>Yes. Gowtham or a senior painter visits, measures your space, shows shade cards and gives a fixed written quote — no charge, no obligation.</p></details>
+      <details><summary>How long does a 2BHK take?</summary><p>Usually 4–6 working days for interior painting, depending on wall condition and the finish you choose.</p></details>
+      <details><summary>Do you move and cover furniture?</summary><p>Yes. We cover furniture and floors, mask switches and fittings, and clean up every evening.</p></details>
+      <details><summary>Which paint brands do you use?</summary><p>We work with all major brands. We'll recommend the right grade for your budget, or use your preferred brand.</p></details>
+      <details><summary>Do you give a warranty?</summary><p>Yes — we offer a workmanship warranty on every job, plus the paint manufacturer's warranty on premium ranges.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><div class="brand" style="color:#fff"><span class="logo">🖌</span>SAI Paintings</div><p style="margin-top:12px;max-width:340px">Interior, exterior, texture &amp; commercial painting across Tamil Nadu. Founded by Gowtham.</p></div>
+      <div><h4>Contact</h4><p><a href="tel:+919876543210">+91 98765 43210</a><br><a href="mailto:hello@saipaintings.in">hello@saipaintings.in</a><br>Mon – Sat · 9 AM – 7 PM</p></div>
+      <div><h4>Quick links</h4><p><a href="#estimate">Price estimate</a><br><a href="#book">Book a visit</a><br><a href="index.html">Design 1</a> · <a href="design-2.html">Design 2</a></p></div>
+    </div>
+    <div class="copy"><span>© <span id="yr"></span> SAI Paintings</span><span>Sample photos: Unsplash · Sample rates for guidance only</span></div>
+  </div>
+</footer>
+
+<!-- ============ CHAT ASSISTANT ============ -->
+<div class="peek" id="peek" data-open-chat>👋 Hi! Need a painting quote? Chat with Gowtham</div>
+<button class="fab" id="fab" aria-label="Open chat"><svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg><span class="dot" id="fabDot">1</span></button>
+<div class="chat" id="chat" role="dialog" aria-label="Chat with SAI Paintings">
+  <div class="wa-head"><img src="images/gowtham.jpg" alt=""><div><b>Gowtham · SAI Paintings</b><small id="chatStatus">online</small></div><button class="close" id="chatClose" aria-label="Close chat">✕</button></div>
+  <div class="wa-body" id="chatBody"></div>
+  <div class="quick-replies" id="qr"></div>
+  <form id="chatForm"><input type="text" id="chatInput" placeholder="Type a message" autocomplete="off"><button aria-label="Send"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button></form>
+</div>
+<div class="toast" id="toast"></div>
+
+<svg width="0" height="0" style="position:absolute"><symbol id="wa-icon" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.3A11.8 11.8 0 0 0 1.8 17.8L.1 24l6.3-1.7A11.8 11.8 0 0 0 23.8 12a11.7 11.7 0 0 0-3.4-8.5z"/></symbol></svg>
+
+<script>
+// ===== business settings — change these to the real details =====
+const WHATSAPP = "919876543210";
+const PHONE = "+91 98765 43210";
+const EMAIL = "hello@saipaintings.in";
+const HOURS = { open: 9, close: 19, days: [1, 2, 3, 4, 5, 6] }; // Mon–Sat, 9 AM – 7 PM
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const waLink = text => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+const openWA = text => window.open(waLink(text), "_blank");
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const now = () => new Date().toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
+const toast = t => { const el = $("#toast"); el.textContent = t; el.classList.add("show"); setTimeout(() => el.classList.remove("show"), 2200); };
+
+// ===== data =====
+// rates are ₹ per sq ft: [economy, premium, luxury] — sample values
+const SERVICES = [
+  { id: "interior", name: "Interior painting", img: "1586023492125-27b2c045efd7", desc: "Smooth emulsion finishes for living rooms, bedrooms and kitchens.", rates: [14, 20, 28], days: 900 },
+  { id: "exterior", name: "Exterior painting", img: "1600585154340-be6161a56a0c", desc: "Weather-proof coatings that handle sun and monsoon for years.", rates: [16, 24, 32], days: 700 },
+  { id: "texture", name: "Texture & designer walls", img: "1541123603104-512919d6a96c", desc: "Stucco, metallic, rustic and stencil feature walls.", rates: [60, 90, 130], days: 150 },
+  { id: "commercial", name: "Commercial & office", img: "1572025442646-866d16c84a54", desc: "Shops, offices and schools — we work after hours.", rates: [12, 18, 25], days: 1200 },
+  { id: "waterproof", name: "Waterproofing", img: "1562259949-e8e7689d7828", desc: "Terrace and wall treatments that stop leaks and damp.", rates: [35, 50, 70], days: 500 },
+  { id: "wood", name: "Wood & metal polish", img: "1595814433015-e6f5ce69614e", desc: "PU, enamel and melamine for doors, grills and furniture.", rates: [40, 60, 85], days: 200 }
+];
+const GRADES = ["Economy", "Premium", "Luxury"];
+const BHK = [["1 BHK", 1800], ["2 BHK", 2800], ["3 BHK", 3800], ["Villa", 6000]];
+const unsplash = (id, w) => `https://images.unsplash.com/photo-${id}?w=${w}&q=75`;
+
+// ===== open / closed status =====
+(function status() {
+  const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
+  const open = HOURS.days.includes(d.getDay()) && h >= HOURS.open && h < HOURS.close;
+  $("#status").classList.toggle("open", open);
+  $("#statusText").textContent = open ? "Open now · replies in ~5 min" : "Closed now · message us, we reply by 9 AM";
+  $("#chatStatus").textContent = open ? "online" : "away · replies by 9 AM";
+})();
+
+// ===== services =====
+$("#svcGrid").innerHTML = SERVICES.map(s => `
+  <article class="svc rv">
+    <div class="im"><img src="${unsplash(s.img, 700)}" alt="${s.name}" loading="lazy"><span class="price">from ₹${s.rates[0]}/sq ft</span></div>
+    <div class="bd"><h3>${s.name}</h3><p>${s.desc}</p>
+      <button class="ask" data-ask="${s.id}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><use href="#wa-icon"/></svg>Ask on WhatsApp</button></div>
+  </article>`).join("");
+
+// ===== segmented controls helper =====
+function seg(el, items, start, onChange) {
+  let val = start;
+  el.innerHTML = items.map((t, i) => `<button type="button" data-i="${i}" class="${i === start ? "on" : ""}">${t}</button>`).join("");
+  el.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    val = +b.dataset.i; [...el.children].forEach(c => c.classList.toggle("on", c === b)); onChange(val);
+  });
+  return () => val;
+}
+
+// ===== estimator =====
+const est = { svc: 0, grade: 1, area: 2800 };
+const eArea = $("#eArea");
+seg($("#eSvc"), SERVICES.map(s => s.name.replace(" painting", "")), 0, v => { est.svc = v; calcEst(); });
+seg($("#eGrade"), GRADES, 1, v => { est.grade = v; calcEst(); });
+seg($("#eBhk"), BHK.map(b => b[0]), 1, v => { est.area = BHK[v][1]; eArea.value = est.area; calcEst(); });
+eArea.addEventListener("input", () => { est.area = +eArea.value; calcEst(); });
+function calcEst() {
+  const s = SERVICES[est.svc], base = est.area * s.rates[est.grade];
+  est.low = base * .9; est.high = base * 1.1;
+  est.days = Math.max(1, Math.ceil(est.area / s.days * 1.0));
+  $("#eAreaVal").textContent = est.area.toLocaleString("en-IN") + " sq ft";
+  $("#eTotal").textContent = `${inr(est.low)} – ${inr(est.high)}`;
+  $("#eDays").textContent = `${s.name} · ${GRADES[est.grade]} · about ${est.days} working day${est.days > 1 ? "s" : ""}`;
+}
+calcEst();
+$("#eSend").onclick = () => openWA(`Hi SAI Paintings! I used your price estimator:\n• Service: ${SERVICES[est.svc].name}\n• Area: ${est.area} sq ft\n• Quality: ${GRADES[est.grade]}\n• Estimate: ${inr(est.low)} – ${inr(est.high)}\nPlease share a final quote / site visit.`);
+
+// ===== paint calculator =====
+let coats = 2;
+seg($("#pCoats"), ["1 coat", "2 coats", "3 coats"], 1, v => { coats = v + 1; calcPaint(); });
+["#pLen", "#pWid", "#pHt", "#pDoors"].forEach(id => $(id).addEventListener("input", calcPaint));
+function calcPaint() {
+  const L = +$("#pLen").value || 0, W = +$("#pWid").value || 0, H = +$("#pHt").value || 0, D = +$("#pDoors").value || 0;
+  const walls = Math.max(0, 2 * (L + W) * H - D * 20), area = walls + L * W; // walls + ceiling, ~20 sq ft per opening
+  $("#pPaint").textContent = (area * coats / 120).toFixed(1);   // ~120 sq ft per litre per coat
+  $("#pPrimer").textContent = (area / 150).toFixed(1);          // ~150 sq ft per litre, one coat
+  $("#pArea").textContent = `Paintable area ≈ ${Math.round(area)} sq ft (walls + ceiling). Coverage varies by brand and wall condition.`;
+}
+calcPaint();
+
+// ===== booking =====
+const SLOTS = ["9–11 AM", "11–1 PM", "2–4 PM", "4–6 PM", "6–7 PM", "Any time"];
+const slot = seg($("#bSlots"), SLOTS, 0, () => {});
+const dt = $("#bDate"), today = new Date();
+dt.min = today.toISOString().slice(0, 10);
+dt.value = new Date(today.getTime() + 864e5).toISOString().slice(0, 10);
+$("#bookForm").onsubmit = e => {
+  e.preventDefault();
+  const date = new Date(dt.value).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
+  openWA(`Hi Gowtham! I'd like to book a FREE site visit 📅\n• Name: ${$("#bName").value}\n• Phone: ${$("#bPhone").value}\n• Date: ${date}\n• Time: ${SLOTS[slot()]}\n• Area: ${$("#bArea").value}${$("#bNote").value ? "\n• Note: " + $("#bNote").value : ""}`);
+};
+
+// ===== save contact (vCard) + share =====
+$("#saveContact").onclick = () => {
+  const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:Gowtham - SAI Paintings\nORG:SAI Paintings\nTEL;TYPE=CELL:${PHONE.replace(/\s/g, "")}\nEMAIL:${EMAIL}\nURL:${location.href.split("#")[0]}\nEND:VCARD`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([vcf], { type: "text/vcard" })); a.download = "SAI-Paintings-Gowtham.vcf"; a.click();
+  toast("Contact card downloaded — open it to save");
+};
+$("#shareBtn").onclick = async () => {
+  const data = { title: "SAI Paintings", text: "Great painters in Tamil Nadu — SAI Paintings by Gowtham", url: location.href.split("#")[0] };
+  try { if (navigator.share) await navigator.share(data); else { await navigator.clipboard.writeText(data.url); toast("Link copied!"); } } catch (_) {}
+};
+
+// ===== gallery + lightbox =====
+const GAL = [["1617104551722-3b2d51366400", "Dining room · Tiruppur"], ["1618221195710-dd6b41faaea6", "Villa · Coimbatore"], ["1604014237800-1c9102c219da", "Apartment · Chennai"],
+  ["1484154218962-a197022b5858", "Kitchen · Salem"], ["1525909002-1b05e0c869d8", "Play school · Erode"], ["1513694203232-719a280e022f", "Living room · Madurai"], ["1600585154340-be6161a56a0c", "Exterior · Trichy"]];
+$("#gal").innerHTML = GAL.map(([id, cap], i) => `<button data-g="${i}"><img src="${unsplash(id, i ? 600 : 1000)}" alt="${cap}" loading="lazy"><span>${cap}</span></button>`).join("");
+$("#gal").onclick = e => { const b = e.target.closest("button"); if (!b) return; const [id, cap] = GAL[b.dataset.g]; $("#lbImg").src = unsplash(id, 1600); $("#lbCap").textContent = cap; $("#lb").classList.add("show"); };
+$("#lb").onclick = e => { if (e.target.id === "lb" || e.target.classList.contains("x")) $("#lb").classList.remove("show"); };
+addEventListener("keydown", e => { if (e.key === "Escape") { $("#lb").classList.remove("show"); closeChat(); } });
+
+// ===== hero phone: looping demo conversation =====
+const DEMO = [
+  ["out", "Hi! How much to paint a 2BHK? 🏠"],
+  ["in", "Vanakkam! 🙏 For a 2BHK interior, premium emulsion is around ₹50k – ₹60k."],
+  ["in", "I can visit tomorrow for a FREE measurement. What time suits you?"],
+  ["out", "Tomorrow 11 AM works 👍"],
+  ["in", "Booked ✅ See you at 11! I'll bring shade cards too 🎨"]
+];
+const demo = $("#demo");
+async function playDemo() {
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  while (true) {
+    demo.innerHTML = "";
+    for (const [side, text] of DEMO) {
+      if (side === "in") { $("#demoStatus").textContent = "typing…"; const t = typingEl(); demo.appendChild(t); await wait(1300); t.remove(); $("#demoStatus").textContent = "online"; }
+      else await wait(900);
+      demo.appendChild(bubble(side, text)); demo.scrollTop = demo.scrollHeight;
+      await wait(1100);
+    }
+    await wait(4000);
+  }
+}
+function bubble(side, text) { const m = document.createElement("div"); m.className = "msg " + side; m.textContent = text; const t = document.createElement("span"); t.className = "tm"; t.textContent = now(); m.appendChild(t); return m; }
+function typingEl() { const t = document.createElement("div"); t.className = "typing"; t.innerHTML = "<i></i><i></i><i></i>"; return t; }
+playDemo();
+
+// ===== chat assistant (guided quote → WhatsApp) =====
+const chat = $("#chat"), body = $("#chatBody"), qr = $("#qr"), input = $("#chatInput");
+const lead = {};
+let step = 0, started = false, waitingText = null;
+const FLOW = [
+  { ask: "Vanakkam! 🙏 I'm Gowtham from SAI Paintings. What would you like to paint?", key: "service", options: SERVICES.map(s => s.name) },
+  { ask: "Great choice! 👍 What kind of place is it?", key: "place", options: ["1 BHK", "2 BHK", "3 BHK", "Villa / House", "Shop / Office"] },
+  { ask: "Which paint quality do you prefer?", key: "grade", options: ["Economy", "Premium", "Luxury", "Not sure — suggest"] },
+  { ask: "When would you like to start?", key: "when", options: ["This week", "This month", "Just checking prices"] },
+  { ask: "Almost done! What's your name? ✍️", key: "name", text: true },
+  { ask: "And your area / city? 📍", key: "area", text: true }
+];
+function botSay(text, delay = 900) {
+  return new Promise(res => {
+    $("#chatStatus").textContent = "typing…";
+    const t = typingEl(); body.appendChild(t); body.scrollTop = body.scrollHeight;
+    setTimeout(() => { t.remove(); $("#chatStatus").textContent = "online"; body.appendChild(bubble("in", text)); body.scrollTop = body.scrollHeight; res(); }, delay);
+  });
+}
+function userSay(text) { body.appendChild(bubble("out", text)); body.scrollTop = body.scrollHeight; }
+function showOptions(opts) {
+  qr.innerHTML = "";
+  opts.forEach(o => { const b = document.createElement("button"); b.type = "button"; b.textContent = o; b.onclick = () => answer(o); qr.appendChild(b); });
+}
+async function ask() {
+  const f = FLOW[step];
+  if (!f) return finish();
+  await botSay(f.ask);
+  if (f.text) { waitingText = f.key; qr.innerHTML = ""; input.focus(); } else { waitingText = null; showOptions(f.options); }
+}
+function answer(val) {
+  qr.innerHTML = ""; userSay(val);
+  lead[FLOW[step].key] = val; step++; waitingText = null; ask();
+}
+function roughEstimate() {
+  const s = SERVICES.find(x => x.name === lead.service) || SERVICES[0];
+  const area = { "1 BHK": 1800, "2 BHK": 2800, "3 BHK": 3800, "Villa / House": 6000, "Shop / Office": 3000 }[lead.place] || 2800;
+  const g = Math.max(0, GRADES.indexOf(lead.grade)); const gi = g < 0 ? 1 : (lead.grade.startsWith("Not") ? 1 : g);
+  const base = area * s.rates[gi]; return `${inr(base * .9)} – ${inr(base * 1.1)}`;
+}
+async function finish() {
+  lead.estimate = roughEstimate();
+  await botSay(`Thanks ${lead.name}! 😊 Here's your summary:\n\n🎨 ${lead.service}\n🏠 ${lead.place}\n⭐ ${lead.grade}\n📅 ${lead.when}\n📍 ${lead.area}\n💰 Rough estimate: ${lead.estimate}`, 1200);
+  await botSay("Tap below to send this to my WhatsApp — I'll reply with a free site-visit slot. 👇", 800);
+  const text = `Hi Gowtham! I'd like a painting quote.\n• Name: ${lead.name}\n• Service: ${lead.service}\n• Place: ${lead.place}\n• Quality: ${lead.grade}\n• Start: ${lead.when}\n• Area: ${lead.area}\n• Website estimate: ${lead.estimate}`;
+  const a = document.createElement("a");
+  a.className = "btn btn-wa sendwa"; a.href = waLink(text); a.target = "_blank"; a.rel = "noopener";
+  a.innerHTML = `<svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg>Send on WhatsApp`;
+  body.appendChild(a); body.scrollTop = body.scrollHeight;
+  showOptions(["Start over"]); qr.firstChild.onclick = restart;
+}
+function restart() { body.innerHTML = ""; qr.innerHTML = ""; step = 0; for (const k in lead) delete lead[k]; ask(); }
+$("#chatForm").onsubmit = e => {
+  e.preventDefault();
+  const v = input.value.trim(); if (!v) return; input.value = "";
+  if (waitingText) return answer(v);
+  // free text outside the flow → offer to forward it
+  userSay(v);
+  botSay("Got it! Tap below and I'll reply on WhatsApp personally 👇").then(() => {
+    const a = document.createElement("a"); a.className = "btn btn-wa sendwa"; a.href = waLink(v); a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = `<svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg>Send on WhatsApp`; body.appendChild(a); body.scrollTop = body.scrollHeight;
+  });
+};
+function openChat(prefillService) {
+  chat.classList.add("show"); $("#peek")?.remove(); $("#fabDot").style.display = "none";
+  if (prefillService) {
+    if (!started || step !== 0) { body.innerHTML = ""; qr.innerHTML = ""; step = 0; for (const k in lead) delete lead[k]; }
+    started = true;
+    botSay(FLOW[0].ask, 500).then(() => answer(prefillService));
+    return;
+  }
+  if (!started) { started = true; ask(); }
+}
+function closeChat() { chat.classList.remove("show"); }
+$("#fab").onclick = () => chat.classList.contains("show") ? closeChat() : openChat();
+$("#chatClose").onclick = closeChat;
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-open-chat]")) openChat();
+  const ask = e.target.closest("[data-ask]");
+  if (ask) openChat(SERVICES.find(s => s.id === ask.dataset.ask).name);
+});
+setTimeout(() => $("#peek")?.remove(), 8000); // hide the greeting bubble so it doesn't cover content
+
+// ===== language toggle (English / Tamil) =====
+const T = {
+  ta: {
+    nav_services: "சேவைகள்", nav_estimate: "மதிப்பீடு", nav_book: "வருகை பதிவு", nav_work: "எங்கள் பணிகள்", nav_faq: "கேள்விகள்", chat: "பேசுங்கள்",
+    hero_h1: 'உங்கள் வீடு,<br><span class="pop">அழகான வண்ணத்தில்.</span>',
+    hero_sub: "வாட்ஸ்அப்பில் பேசுங்கள், உடனடி விலை மதிப்பீடு பெறுங்கள், இலவச நேரடி ஆய்வுக்கு பதிவு செய்யுங்கள் — 2 நிமிடங்களில்.",
+    cta_chat: "வாட்ஸ்அப்பில் பேசுங்கள்", cta_est: "உடனடி மதிப்பீடு →",
+    ticks: "<span>இலவச நேரடி ஆய்வு</span><span>சுத்தமான வேலை</span><span>சரியான நேரத்தில் முடிப்பு</span>",
+    qa1: "எங்களுடன் பேசுங்கள்", qa1s: "1 நிமிடத்தில் விலை", qa2: "விலை மதிப்பீடு", qa2s: "உடனே உங்கள் செலவு", qa3: "வருகை பதிவு", qa3s: "தேதி & நேரம் தேர்வு", qa4: "தொடர்பைச் சேமி", qa4s: "கௌதம் எண்ணை சேமிக்க",
+    svc_eye: "சேவைகள்", svc_h: "நாங்கள் என்ன வண்ணம் பூசலாம்?", svc_p: "எந்த சேவையிலும் \"Ask on WhatsApp\" அழுத்தினால், உங்கள் கேள்வியுடன் அரட்டை திறக்கும்.",
+    est_eye: "உடனடி மதிப்பீடு", est_h: "நாங்கள் வருவதற்கு முன்பே உங்கள் பட்ஜெட்டை அறியுங்கள்.", est_p: "ஸ்லைடரை நகர்த்துங்கள் — விலை உடனே மாறும். வாட்ஸ்அப்பில் அனுப்பி இலவச ஆய்வை உறுதிசெய்யுங்கள்.",
+    book_eye: "இலவச நேரடி ஆய்வு", book_h: "30 விநாடிகளில் வருகையை பதிவு செய்யுங்கள்.", own_h: "கௌதமை சந்தியுங்கள்.",
+    work_eye: "எங்கள் பணிகள்", work_h: "சமீபத்திய திட்டங்கள்.", faq_h: "கேள்விகளும் பதில்களும்"
+  }
+};
+const EN = {};
+$$("[data-i18n]").forEach(el => EN[el.dataset.i18n] = el.textContent);
+$$("[data-i18n-html]").forEach(el => EN[el.dataset.i18nHtml] = el.innerHTML);
+function setLang(l) {
+  const dict = l === "ta" ? T.ta : EN;
+  $$("[data-i18n]").forEach(el => { el.textContent = dict[el.dataset.i18n] ?? EN[el.dataset.i18n]; });
+  $$("[data-i18n-html]").forEach(el => { el.innerHTML = dict[el.dataset.i18nHtml] ?? EN[el.dataset.i18nHtml]; });
+  document.documentElement.lang = l;
+  $$(".lang button").forEach(b => b.classList.toggle("on", b.dataset.lang === l));
+  try { localStorage.setItem("sai-lang", l); } catch (_) {}
+}
+$$(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+try { if (localStorage.getItem("sai-lang") === "ta") setLang("ta"); } catch (_) {}
+
+// ===== scroll reveal =====
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
+$$(".rv").forEach(el => io.observe(el));
+$("#yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
